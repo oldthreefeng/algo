@@ -120,7 +120,7 @@ func ListHeroNode2(head *HeroNode) {
 	}
 	for {
 		fmt.Printf("[%d,%s,%s,%p,%p,%p] <==>\n",
-			temp.no, temp.name, temp.nickName, temp.pre,temp, temp.next) //因为
+			temp.no, temp.name, temp.nickName, temp.pre,temp, temp.next)
 		if temp.pre == nil {
 			break
 		}
