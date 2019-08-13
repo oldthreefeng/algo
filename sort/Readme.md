@@ -62,6 +62,10 @@ arr = [24,69,80,57,13]
 1. 插入排序会经过arr.length-1次比较，一轮排序完毕
 2. 在第i次比较时,前i-1次序列已经排序完成，arr[i]<arr[i-1],借宿比较;
 3. arr[i]>arr[i-1]时，arr[i] 交换 arr[i-1],在进行a[i-1]与a[i-2]
+交换次数太多,优化方案
+0. insertval := arr[i]//暂存arr[i]这个要插入的数据
+1. 如果j=i-1;j>0 && arr[j] < insertval /*左边的数比要插入的数据小 */; j--;
+2. arr[j+1]=arr[j]将arr[j]右移一位.
 
 ```
 源码[insertion](insertionSort.go)

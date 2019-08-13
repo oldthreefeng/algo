@@ -12,9 +12,10 @@ func selectSort(arr *[5]int) *[5]int {
 				minIndex = j
 			}
 		}
-		tmp := arr[i]
-		arr[i] = arr[minIndex]
-		arr[minIndex] = tmp
+		arr[i],arr[minIndex] = arr[minIndex],arr[i]
+		//tmp := arr[i]
+		//arr[i] = arr[minIndex]
+		//arr[minIndex] = tmp
 	}
 	return arr
 }
