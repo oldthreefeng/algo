@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	"sort"
+	"math/rand"
+	"time"
 )
 
-const num = 10
+const num = 100000
 
 func test01(arr *[num]int) {
 	for i := 0; i < num-1; i++ {
-		for j := 1; j < num; j++ {
+		for j := 1; j < num-i-1; j++ {
 			if arr[j] < arr[j-1] {
 				arr[j], arr[j-1] = arr[j-1], arr[j]
 			}
@@ -66,13 +67,17 @@ func Test04(left, right int, arr *[num]int) {
 			l++
 		}
 	}
+	if l == r {
+		l++
+		r--
+	}
 
 	//向左递归
-	if r-left > 1 {
+	if left < r {
 		Test04(left, r, arr)
 	}
 	//向右递归
-	if right-l > 1 {
+	if right > l {
 		Test04(l, right, arr)
 	}
 }
@@ -98,18 +103,35 @@ func Test05(data []int) {
 }
 
 func main() {
-	arr := [num]int{-9, 78, 0, 23, -567, 70, 123, 90, -23, 10}
-	fmt.Println("初始", arr)
+	//arr := [num]int{-9, 78, 0, 23, -567, 70, 123, 90, -23, 10}
+	//fmt.Println("初始", arr)
 	//test01(arr)
 	//test03(arr)
 	//test02(arr)
 	//Test04(0, num-1, arr)
 	//切片直接指针操作
-	arrS := []int{-9, 78, 0, 23, -567, 70, 123, 90, -23, 10}
+	//arrS := []int{-9, 78, 0, 23, -567, 70, 123, 90, -23, 10}
 	//Test05(arrS)
-	fmt.Println("main..")
-	sort.Ints(arrS)
-	fmt.Println(arrS)
+	//fmt.Println("main..")
+	//sort.Ints(arrS)
+	//fmt.Println(arrS)
 	//fmt.Println(arr)
 
+	var arr [num]int
+	for i := 0; i < num; i++{
+		arr[i] = rand.Intn(900000)
+	}
+	start := time.Now().Unix()
+	//test01(&arr)
+	//test02(&arr)
+	//test03(&arr)
+	Test04(0, len(arr)-1, &arr)
+	end := time.Now().Unix()
+	fmt.Println("SelectSort", end-start)
 }
+
+//对100000的无序数组进行排序:
+//bubbleSort 19
+//SelectSort 10
+//InsertSort 2
+//QuickSort 0

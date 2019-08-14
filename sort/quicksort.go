@@ -33,7 +33,7 @@ func QuickSort(left, right int, arr *[num]int) {
 			l++
 		}
 	}
-	//向左递归
+	//向左递归,如果仅大于零,存在r和l相等的情况,就递归在里面了
 	if r-left > 1 {
 		QuickSort(left, r, arr)
 	}
@@ -44,6 +44,9 @@ func QuickSort(left, right int, arr *[num]int) {
 }
 
 func main() {
+	arr := &[num]int{32,1,7,-3,10,16,8,-25,2,100}
+	QuickSort(0,len(arr)-1,arr)
+	fmt.Println(arr)
 	//
 	////reader := bufio.NewReader(os.Stdin)
 	////no,_ := reader.ReadBytes('\n')
