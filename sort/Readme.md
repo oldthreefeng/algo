@@ -71,3 +71,49 @@ arr = [24,69,80,57,13]
 源码[insertion](insertionSort.go)
 
 ![图片](../images/insertionsort.gif)
+
+### 快速排序
+
+
+```cgo
+快速排序使用分治法（Divide and conquer）策略来把一个序列（list）分为较小和较大的2个子序列，然后递归地排序两个子序列。
+
+步骤为：
+
+挑选基准值：从数列中挑出一个元素，称为“基准”（pivot），
+分割：重新排序数列，所有比基准值小的元素摆放在基准前面，所有比基准值大的元素摆在基准后面（与基准值相等的数可以到任何一边）。在这个分割结束之后，对基准值的排序就已经完成，
+递归排序子序列：递归地将小于基准值元素的子序列和大于基准值元素的子序列排序。
+递归到最底部的判断条件是数列的大小是零或一，此时该数列显然已经有序。
+
+选取基准值有数种具体方法，此选取方法对排序的时间性能有决定性影响。
+
+```
+```go
+package  main
+
+func qsort(data []int) {
+	if len(data) <= 1 {
+		return
+	}
+	mid := data[0]
+	head, tail := 0, len(data)-1
+	for i := 1; i <= tail; {
+		if data[i] > mid {
+			data[i], data[tail] = data[tail], data[i]
+			tail--
+		} else {
+			data[i], data[head] = data[head], data[i]
+			head++
+			i++
+		}
+	}
+	qsort(data[:head])
+	qsort(data[head+1:])
+}
+```
+
+> 借用wiki百科的一张图
+
+![图片](https://upload.wikimedia.org/wikipedia/commons/6/6a/Sorting_quicksort_anim.gif)
+
+[quickSort代码](quicksort.go)

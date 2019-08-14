@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 )
 
 const num = 10
@@ -40,108 +41,75 @@ func test03(arr *[num]int) {
 }
 
 //
-//func QuickSort(left, right int, arr *[num]int) {
-//	l, r := left, right
-//	pivot := arr[(left+right)/2]
-//	for l < r {
-//		//从pivot的左边找到大于pivot的值
-//		for arr[l] < pivot {
-//			l++
-//		}
-//		//从pivot的右边找到小于pivot的值
-//		for arr[r] > pivot {
-//			r--
-//		}
-//		if l >= r {
-//			break
-//		}
-//		//交换
-//		arr[l], arr[r] = arr[r], arr[l]
-//		// 优化
-//		if arr[l] == pivot {
-//			r--
-//		}
-//		if arr[r] == pivot {
-//			l++
-//		}
-//	}
-//	//如果l和r相等,就错位
-//	if l == r {
-//		l--
-//		r++
-//	}
-//	//向左递归
-//	if left < r {
-//		QuickSort(left, r, arr)
-//	}
-//	//向右递归
-//	if right > l {
-//		QuickSort(l, right, arr)
-//	}
-//}
-
-//func main() {
-//	arr := &[num]int{1, -20, 31, 400, 0, 16, 7, 28, -39, 10}
-//	//test01(arr)
-//	//test03(arr)
-//	//test02(arr)
-//	QuickSort(0, 9, arr)
-//	fmt.Println(arr)
-//}
-
-func QuickSort(left int, right int, array *[10]int) {
-	l := left
-	r := right
-	// pivot 是中轴， 支点
-	pivot := array[(left+right)/2]
-	temp := 0
-	//for 循环的目标是将比 pivot 小的数放到 左边
-	// 比 pivot 大的数放到 右边
+func Test04(left, right int, arr *[num]int) {
+	l, r := left, right
+	pivot := arr[(left+right)/2]
 	for l < r {
-		//从 pivot 的左边找到大于等于 pivot 的值
-		for array[l] < pivot {
+		//从pivot的左边找到大于pivot的值,小于向右移动指针
+		for arr[l] < pivot {
 			l++
 		}
-		//从 pivot 的右边边找到小于等于 pivot 的值
-		for array[r] > pivot {
+		//从pivot的右边找到小于pivot的值,大于向左移动指针
+		for arr[r] > pivot {
 			r--
 		}
-		// 1 >= r 表明本次分解任务完成, break
 		if l >= r {
 			break
 		}
 		//交换
-		temp = array[l]
-		array[l] = array[r]
-		array[r] = temp
-		//优化
-		if array[l] == pivot {
+		arr[l], arr[r] = arr[r], arr[l]
+		// 优化,如果等于中轴值,相等
+		if arr[l] == pivot {
 			r--
 		}
-		if array[r] == pivot {
+		if arr[r] == pivot {
 			l++
 		}
 	}
-	// 如果 1== r, 再移动下
-	if l == r {
-		l++
-		r--
+
+	//向左递归
+	if r-left > 1 {
+		Test04(left, r, arr)
 	}
-	// 向左递归
-	if left < r {
-		QuickSort(left, r, array)
-	}
-	// 向右递归
-	if right > l {
-		QuickSort(l, right, array)
+	//向右递归
+	if right-l > 1 {
+		Test04(l, right, arr)
 	}
 }
 
+func Test05(data []int) {
+	if len(data) <= 1 {
+		return
+	}
+	mid := data[0]
+	head, tail := 0, len(data)-1
+	for i := 1; i <= tail; {
+		if data[i] > mid {
+			data[i], data[tail] = data[tail], data[i]
+			tail--
+		} else {
+			data[i], data[head] = data[head], data[i]
+			head++
+			i++
+		}
+	}
+	Test05(data[:head])
+	Test05(data[head+1:])
+}
+
 func main() {
-	arr := [10]int{-9, 78, 0, 23, -567, 70, 123, 90, -23, 10}
+	arr := [num]int{-9, 78, 0, 23, -567, 70, 123, 90, -23, 10}
 	fmt.Println("初始", arr)
-	//调用快速排序
-	QuickSort(0, len(arr)-1, &arr)
+	//test01(arr)
+	//test03(arr)
+	//test02(arr)
+	//Test04(0, num-1, arr)
+	//切片直接指针操作
+	arrS := []int{-9, 78, 0, 23, -567, 70, 123, 90, -23, 10}
+	//Test05(arrS)
 	fmt.Println("main..")
-	fmt.Println(arr)
+	sort.Ints(arrS)
+	fmt.Println(arrS)
+	//fmt.Println(arr)
+
 }
