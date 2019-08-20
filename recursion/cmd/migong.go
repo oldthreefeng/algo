@@ -7,7 +7,10 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"gogs.wangke.co/go/algo/recursion"
+)
 
 func main() {
 	//二维数组模拟迷宫
@@ -27,7 +30,7 @@ func main() {
 	//m[1][2] =1
 	m[2][2] =1
 
-	SetWay(&m,1,1)
+	recursion.SetWay(&m,1,1)
 	fmt.Println("探测完毕")
 
 	for _, v := range m {

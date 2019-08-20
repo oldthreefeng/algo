@@ -4,9 +4,9 @@
  */
 package main
 
-import "gogs.wangke.co/go/moocAlgo/recursion"
+import "gogs.wangke.co/go/algo/recursion"
 
 func main() {
-	recursion.NQueen(0)
-	//recursion.Queen(4)
+	//recursion.NQueen(0)
+	recursion.Queen(8)
 }

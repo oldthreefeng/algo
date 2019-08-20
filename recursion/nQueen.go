@@ -21,27 +21,27 @@ func Abs(a int) int {
 
 const N = 4
 
-func NQueen(k int) {
+func NQueen(col int) {
 	var queenPos [N]int
-	var i int
-	if k == N {
+	var pos int
+	if col == N {
 		//for i = 0; i < N-1; i++ {
 		//	fmt.Printf("%d\n", queenPos[i]+1)
 		//}
 		fmt.Println(queenPos)
 		return
 	}
-	for i = 0; i < N; i++ { //遍历第k皇后的为止,
+	for pos = 0; pos < N; pos++ { //逐个尝试第k个皇后的位置,遍历第k皇后的为止,
 		var j int
-		for j = 0; j < k; j++ {
-			if queenPos[j] == i ||queenPos[j]-i == k-j ||
-				queenPos[j]-i == j-k{
+		for j = 0; j < col; j++ {
+			if queenPos[j] == pos ||queenPos[j]-pos == col-j ||
+				queenPos[j]-pos == j-col{
 				break
 			}
 		}
-		if j == k {
-			queenPos[k] = i //将k皇后摆法好i位置
-			NQueen(k + 1)
+		if j == col {
+			queenPos[col] = pos //将k皇后摆法好i位置
+			NQueen(col + 1)
 		}
 
 	}
