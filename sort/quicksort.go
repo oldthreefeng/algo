@@ -1,14 +1,11 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 )
 
-const num = 10
 
-func QuickSort(left, right int, arr *[num]int) {
+func QuickSort(left, right int, arr []int) {
 	l, r := left, right
 	pivot := arr[(left+right)/2]
 	for l < r {
@@ -44,60 +41,33 @@ func QuickSort(left, right int, arr *[num]int) {
 }
 
 func main() {
-	arr := &[num]int{32,1,7,-3,10,16,8,-25,2,100}
-	QuickSort(0,len(arr)-1,arr)
+	arr := []int{32, 1, 7, -3, 10, 16, 8, -25, 2, 100}
+	QuickSort(0, len(arr)-1, arr)
+	//QuickSort1(arr, 0, len(arr)-1)
 	fmt.Println(arr)
-	//
-	////reader := bufio.NewReader(os.Stdin)
-	////no,_ := reader.ReadBytes('\n')
-	////n32 := binary.BigEndian.Uint32(no)
-	////n:= int(n32)
-	//var n int
-	//fmt.Scanln(&n)
-	//
-	//var arr []int
-	//for i := 0; i < n; i++ {
-	//	//no,err := reader.ReadBytes('\n')
-	//	//if err == io.EOF {
-	//	//	break
-	//	//}
-	//	//j32 := binary.BigEndian.Uint32(no)
-	//	//j := int(j32)
-	//	var j int
-	//	fmt.Scanln(&j)
-	//	arr = append(arr, j)
-	//}
-	//
-	//for i := 0; i < len(arr); i++ {
-	//	for j := 0; j < len(arr)-i-1; j++ {
-	//		if arr[j] > arr[j+1] {
-	//			arr[j], arr[j+1] = arr[j+1], arr[j]
-	//		}
-	//	}
-	//}
-	//
-	//i := 0
-	//var j int
-	//for {
-	//	if i >= len(arr)-1 {
-	//		break
-	//	}
-	//	for j = i + 1; j < len(arr) && arr[i] == arr[j]; j++ {
-	//	}
-	//	arr = append(arr[:i+1], arr[j:]...)
-	//	i++
-	//}
-	//for _, v := range arr {
-	//	fmt.Println(v)
-	//}
-	//for k := range sli {
-	//	fmt.Println(k)
-	//}
 
-	reader := bufio.NewReader(os.Stdin)
-	str, _ := reader.ReadString('\n')
-	for _,v := range str {
-		defer fmt.Printf(string(v))
+}
+func Swap(a []int, i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+func QuickSort1(a []int, s, e int) {
+	if s >= e { //start end
+		return
 	}
+	k := a[s]
+	var i, j = s, e
+	for i != j {
+		for j > i && a[j] >= k { //偶数次比较
+			j--
+		}
+		Swap(a, i, j)
+		for i < j && a[i] <= k { //奇数次比较
+			i++
+		}
+		Swap(a, i, j)
+	}
+	QuickSort1(a, s, i-1)
+	QuickSort1(a, i+1, e)
 
 }

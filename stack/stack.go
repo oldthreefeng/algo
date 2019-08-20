@@ -13,48 +13,48 @@ type Stack struct {
 	arr [MaxTop]int
 }
 
-func (this *Stack) IsEmpty() bool {
-	return this.Top == -1
+func (s *Stack) IsEmpty() bool {
+	return s.Top == -1
 }
 
-func (this *Stack) IsFull() bool {
-	return this.Top == MaxTop-1
+func (s *Stack) IsFull() bool {
+	return s.Top == MaxTop-1
 }
 
-func (this *Stack) Push(val int) (err error) {
-	if this.IsFull() {
+func (s *Stack) Push(val int) (err error) {
+	if s.IsFull() {
 		return errors.New("Stack Full")
 	}
-	this.Top++
-	this.arr[this.Top] = val
+	s.Top++
+	s.arr[s.Top] = val
 	fmt.Println("stack push ", val)
 	return
 }
 
-func (this *Stack) Pop() (val int, err error) {
-	if this.IsEmpty() {
+func (s *Stack) Pop() (val int, err error) {
+	if s.IsEmpty() {
 		return 0, errors.New("Stack Empty")
 	}
-	val = this.arr[this.Top]
-	this.Top--
+	val = s.arr[s.Top]
+	s.Top--
 	return val, nil
 }
 
-func (this *Stack) List() {
-	if this.IsEmpty() {
+func (s *Stack) List() {
+	if s.IsEmpty() {
 		return
 	}
-	//for k,v :=range this.arr {
+	//for k,v :=range s.arr {
 	//	defer fmt.Printf("arr[%d] = %d\n",k,v)
 	//}
 	fmt.Println("Stack -->")
-	for i := this.Top; i >= 0; i-- {
-		fmt.Printf("arr[%d] = %d\n", i, this.arr[i])
+	for i := s.Top; i >= 0; i-- {
+		fmt.Printf("arr[%d] = %d\n", i, s.arr[i])
 	}
 }
 
 // 判断是否为运算符[+,-,*,/]
-func (this *Stack) IsOpr(val int) bool {
+func (s *Stack) IsOpr(val int) bool {
 	/* ASCII '42 * 43 + 45 - 47 /' */
 	if val == 42 || val == 43 || val == 45 || val == 47 {
 		return true
@@ -64,7 +64,7 @@ func (this *Stack) IsOpr(val int) bool {
 
 }
 
-func (this *Stack) Cal(a, b, opr int) int {
+func (s *Stack) Cal(a, b, opr int) int {
 	res := 0
 	switch opr {
 	case 42:
@@ -83,7 +83,7 @@ func (this *Stack) Cal(a, b, opr int) int {
 
 // 编写方法,返回运算符的优先级[自定义]
 
-func (this *Stack) Nice(opr int) int {
+func (s *Stack) Nice(opr int) int {
 	/* * / Nice返回1
 	   + - Nice返回0	*/
 	res := 0
