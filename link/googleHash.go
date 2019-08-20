@@ -193,7 +193,6 @@ func main() {
 			if err != nil {
 				fmt.Println(err)
 			}
-		//	TODO func Delete
 		case "show":
 			hashTable.ShowAll()
 		case "find":
