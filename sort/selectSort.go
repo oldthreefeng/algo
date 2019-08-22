@@ -29,3 +29,5 @@ func main() {
 }
 
 //TODO  other Algorithm in sort
+// add MergeSort 20190821
+// add QuickSort 20190821

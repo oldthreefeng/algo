@@ -16,7 +16,6 @@ func f(x float64) float64 {
 func FindX() float64 {
 	var root, x1, x2, y float64
 	const EPS = 1e-6
-	fmt.Println(EPS)
 	x1, x2 = 0, 100
 	root = x1 + (x2-x1)/2
 	triedTimes := 1
