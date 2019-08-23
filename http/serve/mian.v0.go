@@ -16,6 +16,8 @@ import (
 	"strings"
 )
 
+const tplName  = "d:/text/form.gtpl"
+
 func sayHelloName(w http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
 	//GET提交的数据会放在URL之后，以?分割URL和传输数据，参数之间以&相连
@@ -34,14 +36,16 @@ func sayHelloName(w http.ResponseWriter, req *http.Request) {
 func Form(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method)
 	if r.Method == "GET" {
-		t, err := template.ParseFiles("C:/source_code/fenghong/go/src/gogs.wangke.co/go/algo/http/serve/form.gtpl")
+		t, err := template.ParseFiles(tplName)
 		if err != nil {
 			panic(err)
 		}
 		log.Println(t.Execute(w, nil))
 	} else {
 		r.ParseForm()
-		//fmt.Println("username:", r.Form["username"])
+		fmt.Println("username:", r.Form["username"])
+		fmt.Println("username:", template.HTMLEscapeString(r.Form.Get("username")))
+		fmt.Println("password:", template.HTMLEscapeString(r.Form.Get("password")))
 		for k,v :=range r.Form {
 			fmt.Println(k,v)
 		}
@@ -65,7 +69,7 @@ func Form(w http.ResponseWriter, r *http.Request) {
 
 		//中文
 		if !isEng(r.Form.Get("engname")) {
-			fmt.Fprintf(w,"English name")
+			fmt.Fprintf(w,"请输入正确的英文名")
 			return
 		}
 		//邮箱
@@ -100,7 +104,7 @@ func Form(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		fmt.Fprintf(w,"表单验证")
+		fmt.Fprintf(w,"表单验证成功")
 	}
 }
 

@@ -39,7 +39,7 @@
     </style>
 </head>
 <body>
-<form action="/login" method="post">
+<form action="/form" method="post">
     <dl>
         <dt>用户名：</dt>
         <dd>
