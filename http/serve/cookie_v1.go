@@ -2,7 +2,7 @@
  * @time: 2019-08-22 22:31
  * @author: louis
  */
-package serve
+package main
 
 import (
 	"fmt"

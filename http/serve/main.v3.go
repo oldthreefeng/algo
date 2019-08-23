@@ -5,7 +5,7 @@
 @Software: GoLand
 */
 
-package serve
+package main
 
 import (
 	"io"
