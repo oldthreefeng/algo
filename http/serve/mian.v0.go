@@ -9,14 +9,17 @@ package main
 
 import (
 	"fmt"
+	"github.com/Unknwon/com"
 	"html/template"
 	"log"
 	"net/http"
+	"os"
+	"path"
 	"regexp"
 	"strings"
 )
 
-const tplName  = "d:/text/form.gtpl"
+const tplName  = "http/serve/form.gtpl"
 
 func sayHelloName(w http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
@@ -36,6 +39,10 @@ func sayHelloName(w http.ResponseWriter, req *http.Request) {
 func Form(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method)
 	if r.Method == "GET" {
+		if !com.IsExist(tplName) {
+			os.MkdirAll(path.Dir(tplName), os.ModePerm)
+			os.Create(tplName)
+		}
 		t, err := template.ParseFiles(tplName)
 		if err != nil {
 			panic(err)
