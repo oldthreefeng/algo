@@ -120,11 +120,11 @@ func NewPropose(id int, value string, nt network, acceptors ...int) *proposer {
 	return p
 }
 
-func (p *proposer) run()  {
+func (p *proposer) run() {
 	var ok bool
 	var m mes
 	//1. Proposer选择一个提案编号N，然后向半数以上的Acceptor发送编号为N的Prepare请求。
-	for !p.quorumCheck(){
+	for !p.quorumCheck() {
 		if !ok {
 			ms := p.prepare()
 			for i := range ms {
@@ -144,7 +144,7 @@ func (p *proposer) run()  {
 			log.Panicf("proposer: %d unexpected message type: %v", p.id, m.mesT)
 		}
 	}
-	log.Printf("%d promise %d reached quorum %d",p.id,p.n(),p.quorum())
+	log.Printf("%d promise %d reached quorum %d", p.id, p.n(), p.quorum())
 	//2. 如果Proposer收到半数以上Acceptor对其发出的编号为N的Prepare请求的响应，
 	//   那么它就会发送一个针对[N,V]提案的Accept请求给半数以上的Acceptor
 	ms := p.propose()
@@ -158,9 +158,9 @@ func (p *proposer) quorum() int {
 	return len(p.acceptors)/2 + 1
 }
 
-func (p *proposer) quorumCheck() bool  {
-	m:= 0
-	for _, promise := range  p.acceptors {
+func (p *proposer) quorumCheck() bool {
+	m := 0
+	for _, promise := range p.acceptors {
 		if promise.number() == p.n() {
 			m++
 		}
@@ -185,7 +185,7 @@ func (p *proposer) propose() []mes {
 	// 取acceptors里面的index,promise,只能取promise里面的mes.n
 	for to, promise := range p.acceptors {
 		//如果acceptors的n,和proposer的提案n相等,即acceptor接收proposer的提案n.
-		if promise.number() == p.n(){
+		if promise.number() == p.n() {
 			m[i] = mes{
 				from:  p.id,
 				to:    to,
@@ -225,14 +225,14 @@ func (p *proposer) prepare() []mes {
 }
 
 //暂未理解
-func (p *proposer) receivePromise(promise *mes)  {
+func (p *proposer) receivePromise(promise *mes) {
 	prePromise := p.acceptors[promise.number()]
 	// 待接收的promise
-	if prePromise.number() < promise.number(){
+	if prePromise.number() < promise.number() {
 		log.Printf("proposer: %d received a new promise %+v", p.id, promise)
 		p.acceptors[promise.number()] = promise
 
-		if promise.proposalNumber() > p.valueN{
+		if promise.proposalNumber() > p.valueN {
 			//promise的preN大于proposer的valueN
 			log.Printf("proposer: %d updated the value [%s] to %s",
 				p.id, p.value, promise.proposalValue())
@@ -240,4 +240,142 @@ func (p *proposer) receivePromise(promise *mes)  {
 			p.value = promise.proposalValue()
 		}
 	}
+}
+
+type acceptor struct {
+	id       int
+	learners []int
+	accept   mes
+	promised promise
+	nt       network
+}
+
+func NewAcceptor(id int, nt network, learners ...int) *acceptor {
+	return &acceptor{
+		id:       id,
+		nt:       nt,
+		promised: &mes{},
+		learners: learners,
+	}
+}
+
+// P1. An acceptor must accept the first proposal that it receives.
+// If a proposal with value v is chosen, then every higher-numbered proposal
+// accepted by any acceptor has value v.
+func (a *acceptor) run() {
+	for {
+		m, ok := a.nt.recv(time.Hour)
+		if !ok {
+			continue
+		}
+		switch m.mesT {
+		case Propose:
+			accepted := a.receivePropose(m)
+			if accepted {
+				for _, l := range a.learners {
+					m = a.accept
+					m.from = a.id
+					m.to = l
+					a.nt.send(m)
+				}
+			}
+		case Prepare:
+			promised, ok := a.receivePrepare(m)
+			if ok {
+				a.nt.send(promised)
+			}
+		default:
+			log.Panicf("accepted : %d message tpye unknwon: %d", a.id, m.mesT)
+		}
+	}
+}
+
+// If an acceptor receives an accept request for a proposal numbered
+// n, it accepts the proposal unless it has already responded to a prepare
+// request having a number greater than n.
+func (a *acceptor) receivePropose(propose mes) bool {
+	// 提案N > mes.n;不接收这个提案
+	if a.promised.number() > propose.number() {
+		log.Printf("acceptor %d [promised: %+v] ignored propose mes: %+v", a.id, a.promised, propose)
+		return false
+	}
+	// 提案N < mes.n;
+	if a.promised.number() < propose.number() {
+		log.Panicf("acceptor %d [promised: %+v] received unexpected proposal mes: %+v",
+			a.id, a.promised, propose)
+	}
+	log.Printf("acceptor %d [promised: %+v, accept: %+v]  accepted propose: %+v",
+		a.id, a.promised, a.accept, propose)
+	a.accept = propose
+	a.accept.mesT = Accept
+	return true
+}
+
+// If an acceptor receives a prepare request with number n greater
+// than that of any prepare request to which it has already responded,
+// then it responds to the request with a promise not to accept any more
+// proposals numbered less than n and with the highest-numbered proposal
+// (if any) that it has accepted.
+func (a *acceptor) receivePrepare(m mes) (promised mes, b bool) {
+	//如果获取的m.n大于提案N,Promised提案接收,承诺不再接收任何小于N的提案
+	if a.promised.number() < m.number() {
+		log.Printf("acceptor %d [promised: %+v]  promised mes: %+v", a.id, a.promised, m)
+		a.promised = &m
+		//把消息返回
+		promised = mes{
+			mesT:  Promise,
+			from:  a.id,
+			to:    m.from,
+			n:     m.number(),
+			pren:  a.accept.n,
+			value: a.accept.value,
+		}
+		return
+	}
+	log.Printf("acceptor %d [promised: %+v] ignored prepare mes: %+v", a.id, a.promised, m)
+	return mes{}, false
+}
+
+type learner struct {
+	id        int
+	acceptors map[int]accept
+	nt        network
+}
+
+func NewLearner(id int, nt network, acceptors ...int) *learner {
+	l := &learner{id: id, nt: nt, acceptors: make(map[int]accept)}
+	for _, a := range acceptors {
+		l.acceptors[a] = &mes{mesT: Accept}
+	}
+	return l
+}
+
+func (l *learner) learn() string {
+	for {
+		m,ok := l.nt.recv(time.Hour)
+		if !ok {
+			continue
+		}
+		if m.mesT != Accept {
+			log.Panicf("learner :%d receive an unexpected proposal mes: %+v",l.id,m)
+		}
+		l.receiveAccept(m)
+		accept,ok := l.chosen()
+		if !ok {
+			continue
+		}
+		log.Printf("learner :%d has chosen proposal : %v ",l.id,accept)
+		return accept.proposalValue()
+	}
+}
+
+func (l *learner) chosen() (accept,bool)  {
+
+}
+
+func (l *learner) quorum() int {
+	return len(l.acceptors)/2 +1
+}
+func (l *learner) receiveAccept(accept mes) bool  {
+
 }
