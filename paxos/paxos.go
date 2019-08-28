@@ -8,6 +8,7 @@
 package paxos
 
 import (
+	"fmt"
 	"log"
 	"time"
 )
@@ -30,15 +31,15 @@ type accept interface {
 
 type mes struct {
 	from, to int
-	mesT     int
+	typ      int
 	n        int
 	pren     int
 	value    string
 }
 
-func (m *mes) proposalValue() string {
+func (m mes) proposalValue() string {
 	//返回value需要什么条件呢？
-	switch m.mesT {
+	switch m.typ {
 	case Accept, Promise:
 		return m.value
 	default:
@@ -47,8 +48,8 @@ func (m *mes) proposalValue() string {
 
 }
 
-func (m *mes) proposalNumber() int {
-	switch m.mesT {
+func (m mes) proposalNumber() int {
+	switch m.typ {
 	case Promise:
 		return m.pren
 	case Accept:
@@ -58,7 +59,7 @@ func (m *mes) proposalNumber() int {
 	}
 }
 
-func (m *mes) number() int {
+func (m mes) number() int {
 	return m.n
 }
 
@@ -71,17 +72,40 @@ type paxosNet struct {
 	recv map[int]chan mes
 }
 
-func (n *paxosNet) send(m mes) {
-	n.recv[m.to] <- m
+func NewPaxosNet(agents ...int) *paxosNet {
+	pn := &paxosNet{recv: make(map[int]chan mes, 0)}
+	for _, a := range agents {
+		pn.recv[a] = make(chan mes, 1024)
+	}
+	return pn
 }
 
-func (n *paxosNet) rec(from int, timeout time.Duration) (mes, bool) {
+func (pn *paxosNet) send(m mes) {
+	log.Printf("nt send message :%+v", m)
+	pn.recv[m.to] <- m
+}
+
+func (pn *paxosNet) rec(from int, timeout time.Duration) (mes, bool) {
 	select {
-	case m := <-n.recv[from]:
+	case m := <-pn.recv[from]:
+		log.Printf("nt recv message :%+v", m)
 		return m, true
 	case <-time.After(timeout):
 		return mes{}, false
 	}
+}
+
+func (pn *paxosNet) agentNet(id int) *agentNet {
+	return &agentNet{id: id, pn: pn}
+}
+
+func (pn *paxosNet) empty() bool {
+	var n int
+	for i, q := range pn.recv {
+		log.Printf("nt %+v left %d", i, len(q))
+		n += len(q)
+	}
+	return n == 0
 }
 
 type agentNet struct {
@@ -115,7 +139,7 @@ func NewPropose(id int, value string, nt network, acceptors ...int) *proposer {
 		acceptors: make(map[int]promise),
 	}
 	for _, a := range acceptors { //遍历acceptors,生成proposer
-		p.acceptors[a] = &mes{}
+		p.acceptors[a] = mes{}
 	}
 	return p
 }
@@ -123,9 +147,10 @@ func NewPropose(id int, value string, nt network, acceptors ...int) *proposer {
 func (p *proposer) run() {
 	var ok bool
 	var m mes
-	//1. Proposer选择一个提案编号N，然后向半数以上的Acceptor发送编号为N的Prepare请求。
+	//c.2 acceptor里返回的promise达到半数以上
 	for !p.quorumCheck() {
 		if !ok {
+			//a. Proposer准备prepare,生成提案编号N，然后向半数以上的Acceptor发送编号为N的Prepare请求。
 			ms := p.prepare()
 			for i := range ms {
 				p.nt.send(ms[i])
@@ -137,18 +162,20 @@ func (p *proposer) run() {
 			continue
 		}
 		// prepare成功
-		switch m.mesT {
+		switch m.typ {
 		case Promise:
-			p.receivePromise(&m)
+			//c.1 更新proposer里面的acceptor,保证proposer存入的acceptor提案N为最新
+			p.receivePromise(m)
 		default:
-			log.Panicf("proposer: %d unexpected message type: %v", p.id, m.mesT)
+			log.Panicf("proposer: %d unexpected message type: %v", p.id, m.typ)
 		}
 	}
 	log.Printf("%d promise %d reached quorum %d", p.id, p.n(), p.quorum())
-	//2. 如果Proposer收到半数以上Acceptor对其发出的编号为N的Prepare请求的响应，
+	//c.3 如果Proposer收到半数以上Acceptor对其发出的编号为N的Prepare请求的响应，
 	//   那么它就会发送一个针对[N,V]提案的Accept请求给半数以上的Acceptor
 	ms := p.propose()
 	for i := range ms {
+		fmt.Printf("proposer %d: ", p.id)
 		p.nt.send(ms[i])
 	}
 }
@@ -158,9 +185,11 @@ func (p *proposer) quorum() int {
 	return len(p.acceptors)/2 + 1
 }
 
+//c.2 acceptor返回的promise大于半数以上同意
 func (p *proposer) quorumCheck() bool {
 	m := 0
 	for _, promise := range p.acceptors {
+		// promise里面的提案N 必须和 proposer的提案N相同.
 		if promise.number() == p.n() {
 			m++
 		}
@@ -171,14 +200,15 @@ func (p *proposer) quorumCheck() bool {
 	return false
 }
 
-//向Proposer承诺保证不再接受任何编号小于N的提案。
+//在一个paxos实例中，每个提案需要有不同的编号，且编号间要存在全序关系
 func (p *proposer) n() int {
 	// 把"<<"左边的运算数的各二进位全部左移若干位，由"<<"右边的数指定移动的位数，高位丢弃，低位补0
 	// 再把结果和p.id 进行或运算,将1位合并置1
 	return p.lastSeq<<16 | p.id
 }
 
-//发送一个针对[N,V]提案的Accept请求给半数以上的Acceptor;生成一个消息切片,准备发送
+//c.3 如果Proposer收到半数以上Acceptor对其发出的编号为N的Prepare请求的响应，把proposer的value携带上.
+//   那么它就会发送一个针对[N,V]提案的Accept请求给半数以上的Acceptor
 func (p *proposer) propose() []mes {
 	m := make([]mes, p.quorum())
 	i := 0
@@ -189,7 +219,7 @@ func (p *proposer) propose() []mes {
 			m[i] = mes{
 				from:  p.id,
 				to:    to,
-				mesT:  Propose,
+				typ:   Propose,
 				n:     p.n(),
 				value: p.value,
 			}
@@ -202,8 +232,7 @@ func (p *proposer) propose() []mes {
 	return m
 }
 
-//(a) 向Proposer承诺保证不再接受任何编号小于N的提案。
-//(b) 如果Acceptor已经接受过提案，那么就向Proposer响应已经接受过的编号小于N的最大编号的提案。
+//a. Proposer选择一个提案编号N，然后向半数以上的Acceptor发送编号为N的Prepare请求。
 func (p *proposer) prepare() []mes {
 	p.lastSeq++
 	m := make([]mes, p.quorum())
@@ -213,7 +242,7 @@ func (p *proposer) prepare() []mes {
 		m[i] = mes{
 			from: p.id,
 			to:   to,
-			mesT: Prepare,
+			typ:  Prepare,
 			n:    p.n(),
 		}
 		i++
@@ -223,19 +252,21 @@ func (p *proposer) prepare() []mes {
 	}
 	return m
 }
-
-//暂未理解
-func (p *proposer) receivePromise(promise *mes) {
-	prePromise := p.acceptors[promise.number()]
-	// 待接收的promise
+//c.1 更新proposer里面的acceptor,保证proposer存入的acceptor提案N为最新
+// 从acceptor接收的promise消息.
+func (p *proposer) receivePromise(promise mes) {
+	prePromise := p.acceptors[promise.from]
+	// 从acceptor接收的promise和propose里面的number进行比对
+	// propose.acceptors[promise.from].number() < promise.number()
+	// 返回的promise大,则更新proposer里面的promise为最新版.
 	if prePromise.number() < promise.number() {
 		log.Printf("proposer: %d received a new promise %+v", p.id, promise)
-		p.acceptors[promise.number()] = promise
-
+		p.acceptors[promise.from] = promise
+		//acceptors返回的提案preN > proposer的N
 		if promise.proposalNumber() > p.valueN {
-			//promise的preN大于proposer的valueN
 			log.Printf("proposer: %d updated the value [%s] to %s",
 				p.id, p.value, promise.proposalValue())
+			//promise.pren = p.n()
 			p.valueN = promise.proposalNumber()
 			p.value = promise.proposalValue()
 		}
@@ -243,7 +274,10 @@ func (p *proposer) receivePromise(promise *mes) {
 }
 
 type acceptor struct {
-	id       int
+	id int
+	//一旦acceptor接收提案propose;
+	// 便需要通知所有learners,通信总次数为 M * N
+	//TODO 通知learner集合,再由learner集合通知剩下的learner
 	learners []int
 	accept   mes
 	promised promise
@@ -254,24 +288,25 @@ func NewAcceptor(id int, nt network, learners ...int) *acceptor {
 	return &acceptor{
 		id:       id,
 		nt:       nt,
-		promised: &mes{},
+		promised: mes{},
 		learners: learners,
 	}
 }
 
-// P1. An acceptor must accept the first proposal that it receives.
-// If a proposal with value v is chosen, then every higher-numbered proposal
-// accepted by any acceptor has value v.
 func (a *acceptor) run() {
 	for {
 		m, ok := a.nt.recv(time.Hour)
 		if !ok {
 			continue
 		}
-		switch m.mesT {
+		switch m.typ {
 		case Propose:
+			//d. 接收proposer的提案N,如果已接收提案N>返回的propose的提案N,则忽略
+			//    如果已接收提案N< 返回的propose提案N,说明错误;违反了P2c原则
+			//    如果相同,则接收提案N,将propose提案存入accept里面,并将accept.typ改为接受.
 			accepted := a.receivePropose(m)
 			if accepted {
+				//e. 将accept信息发送至learner,通知learner我接受提案N
 				for _, l := range a.learners {
 					m = a.accept
 					m.from = a.id
@@ -279,27 +314,30 @@ func (a *acceptor) run() {
 					a.nt.send(m)
 				}
 			}
+			//b. acceptor返回promise,并保证小于n的提案不在接收
 		case Prepare:
 			promised, ok := a.receivePrepare(m)
 			if ok {
 				a.nt.send(promised)
 			}
 		default:
-			log.Panicf("accepted : %d message tpye unknwon: %d", a.id, m.mesT)
+			log.Panicf("accepted : %d message tpye unknwon: %d", a.id, m.typ)
 		}
 	}
 }
 
-// If an acceptor receives an accept request for a proposal numbered
-// n, it accepts the proposal unless it has already responded to a prepare
-// request having a number greater than n.
+// d. 接收proposer的提案N,如果已接收提案N>返回的propose的提案N,则忽略
+//    如果已接收提案N< 返回的propose提案N,说明错误;违反了P2c原则
+//    如果相同,则接收提案N,将propose提案存入accept里面,并将accept.typ改为接受.
+//P2c：如果一个编号为 n 的提案具有 value v，那么存在一个多数派，要么他们中所有人都没有接受（accept）编号小于 n
+//的任何提案，要么他们已经接受（accept）的所有编号小于 n 的提案中编号最大的那个提案具有 value v。
 func (a *acceptor) receivePropose(propose mes) bool {
-	// 提案N > mes.n;不接收这个提案
+	// 已接收提案N > propose的mes.n;不接收这个提案
 	if a.promised.number() > propose.number() {
 		log.Printf("acceptor %d [promised: %+v] ignored propose mes: %+v", a.id, a.promised, propose)
 		return false
 	}
-	// 提案N < mes.n;
+	//已接收提案N < propose的mes.n;
 	if a.promised.number() < propose.number() {
 		log.Panicf("acceptor %d [promised: %+v] received unexpected proposal mes: %+v",
 			a.id, a.promised, propose)
@@ -307,32 +345,29 @@ func (a *acceptor) receivePropose(propose mes) bool {
 	log.Printf("acceptor %d [promised: %+v, accept: %+v]  accepted propose: %+v",
 		a.id, a.promised, a.accept, propose)
 	a.accept = propose
-	a.accept.mesT = Accept
+	a.accept.typ = Accept
 	return true
 }
 
-// If an acceptor receives a prepare request with number n greater
-// than that of any prepare request to which it has already responded,
-// then it responds to the request with a promise not to accept any more
-// proposals numbered less than n and with the highest-numbered proposal
-// (if any) that it has accepted.
-func (a *acceptor) receivePrepare(m mes) (promised mes, b bool) {
-	//如果获取的m.n大于提案N,Promised提案接收,承诺不再接收任何小于N的提案
-	if a.promised.number() < m.number() {
-		log.Printf("acceptor %d [promised: %+v]  promised mes: %+v", a.id, a.promised, m)
-		a.promised = &m
+//b. acceptor返回promise,并保证小于n的提案不在接收
+func (a *acceptor) receivePrepare(prepare mes) (promised mes, b bool) {
+	// 如果获取的m.n大于提案N,Promised提案接收,承诺不再接收任何小于N的提案
+	// P1:一个 acceptor 必须接受（accept）第一次收到的提案。
+	if a.promised.number() < prepare.number() {
+		log.Printf("acceptor %d [promised: %+v]  promised %+v", a.id, a.promised, prepare)
+		a.promised = prepare
 		//把消息返回
 		promised = mes{
-			mesT:  Promise,
+			typ:   Promise,
 			from:  a.id,
-			to:    m.from,
-			n:     m.number(),
+			to:    prepare.from,
+			n:     a.promised.number(),
 			pren:  a.accept.n,
 			value: a.accept.value,
 		}
-		return
+		return promised, true
 	}
-	log.Printf("acceptor %d [promised: %+v] ignored prepare mes: %+v", a.id, a.promised, m)
+	log.Printf("acceptor %d [promised: %+v] ignored prepare mes: %+v", a.id, a.promised, prepare)
 	return mes{}, false
 }
 
@@ -340,42 +375,75 @@ type learner struct {
 	id        int
 	acceptors map[int]accept
 	nt        network
+	value 	  string   //测试数据比对,learner学习后得到的提案N对应的V[N,V]
 }
 
 func NewLearner(id int, nt network, acceptors ...int) *learner {
 	l := &learner{id: id, nt: nt, acceptors: make(map[int]accept)}
 	for _, a := range acceptors {
-		l.acceptors[a] = &mes{mesT: Accept}
+		l.acceptors[a] = mes{typ: Accept}
 	}
 	return l
 }
 
 func (l *learner) learn() string {
 	for {
-		m,ok := l.nt.recv(time.Hour)
+		//f. 等待acceptor发送accept mes,
+		m, ok := l.nt.recv(time.Hour)
 		if !ok {
 			continue
 		}
-		if m.mesT != Accept {
-			log.Panicf("learner :%d receive an unexpected proposal mes: %+v",l.id,m)
+		//f.1 如果消息类型不为Accept, 返回错误
+		if m.typ != Accept {
+			log.Panicf("learner :%d receive an unexpected proposal mes: %+v", l.id, m)
 		}
+		//f.2 从accepted消息中来进行比对,如果接收的提案N > learner存入的提案N,需要重新学习;否则就忽略
 		l.receiveAccept(m)
-		accept,ok := l.chosen()
+		//g. 如果半数以上的learner选择了提案N,则说明选择完毕
+		accept, ok := l.chosen()
 		if !ok {
 			continue
 		}
-		log.Printf("learner :%d has chosen proposal : %v ",l.id,accept)
-		return accept.proposalValue()
+		log.Printf("learner :%d has chosen proposal : %v ", l.id, accept)
+		l.value = accept.proposalValue()
+		return l.value
 	}
 }
 
-func (l *learner) chosen() (accept,bool)  {
+//g. 如果半数的learner选择了提案N,则说明选择完毕
+func (l *learner) chosen() (accept, bool) {
 
+	counts := make(map[int]int)
+	accepts := make(map[int]accept)
+
+	for _, accepted := range l.acceptors {
+		// 统计learner接收提案的次数;为0说明没有接收过提案
+		if accepted.proposalNumber() != 0 {
+			counts[accepted.proposalNumber()]++
+			accepts[accepted.proposalNumber()] = accepted
+		}
+	}
+
+	for n, count := range counts {
+		// quorum达到即返回
+		if count >= l.quorum() {
+			return accepts[n], true
+		}
+	}
+
+	return mes{}, false
 }
 
 func (l *learner) quorum() int {
-	return len(l.acceptors)/2 +1
+	return len(l.acceptors)/2 + 1
 }
-func (l *learner) receiveAccept(accept mes) bool  {
 
+//f.2 从accepted消息中来进行比对,如果接收的提案N > learner存入的提案N,需要重新学习;否则就忽略
+func (l *learner) receiveAccept(accepted mes) {
+	a := l.acceptors[accepted.from]
+	// 提案N < 接收的 N; 需要接收大于N的提案
+	if a.proposalNumber() < accepted.n {
+		log.Printf("learner %d has learned a new proposal mes: %+v", l.id, accepted)
+		l.acceptors[accepted.from] = accepted
+	}
 }
