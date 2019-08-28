@@ -32,13 +32,12 @@ func TestN(t *testing.T) {
 		if id == 0 {
 			first = n
 			cur = n
-		} else {
-			cur.next = n
-			if cur.key == cur.next.key {
+		} 
+		cur.next = n
+		if cur.key == cur.next.key {
 				log.Fatalln("有重复元素")
-			}
-			cur = n
 		}
+		cur = n
 		lastSeq++
 	}
 
