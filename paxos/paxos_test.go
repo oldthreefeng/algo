@@ -67,7 +67,7 @@ func TestSingleProposer(t *testing.T) {
 	go l1.learn()
 	go l.learn()
 	if l.value != l1.value {
-		t.Errorf("value = %s,wantValue = %s", l.learn(), wantValue)
+		t.Errorf("value = %s,wantValue = %s", l.GetValue(), wantValue)
 	}
 	time.Sleep(500 * time.Millisecond)
 }
@@ -95,11 +95,12 @@ func TestTwoPropose(t *testing.T) {
 	go p2.run()
 
 	l := NewLearner(2001, pn.agentNet(2001), 1, 2, 3)
-	value := l.learn()
-	if value != wantV2 {
-		t.Errorf("value = %s,wantValue = %s", value, wantV2)
+	go l.learn()
+	va := l.GetValue()
+	if va != wantV2 {
+		t.Errorf("value = %s,wantValue = %s", va, wantV2)
 	}
-	time.Sleep(300 * time.Microsecond)
+
 }
 
 func TestNPropose(t *testing.T) {
@@ -120,13 +121,18 @@ func TestNPropose(t *testing.T) {
 	for _, p := range pp {
 		go p.run()
 	}
-
-	l := NewLearner(2001, pn.agentNet(2001), 1, 2, 3)
-	l1 := NewLearner(2002, pn.agentNet(2001), 1, 2, 3)
-	go l.learn()
-	go l1.learn()
-	if l.value != l1.value {
-		t.Errorf("value = %s,wantValue = %s", l.value, l1.value)
+	//这里模拟两个learner
+	ln := make([]*learner, 0)
+	for i := 2001; i <= 2002; i++ {
+		ln = append(ln, NewLearner(i, pn.agentNet(i), 1, 2, 3))
 	}
-	time.Sleep(300 * time.Millisecond)
+	var v [2]string
+	for k, l := range ln {
+		go l.learn()
+		v[k] = l.GetValue()
+	}
+	if v[0] != v[1] {
+		t.Errorf("value = %s,wantValue = %s", v[0], v[1])
+	}
+	time.Sleep(500 * time.Millisecond)
 }

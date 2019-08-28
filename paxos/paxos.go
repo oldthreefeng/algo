@@ -375,18 +375,27 @@ type learner struct {
 	id        int
 	acceptors map[int]accept
 	nt        network
-	value 	  string   //测试数据比对,learner学习后得到的提案N对应的V[N,V]
+	value 	  chan string   //测试数据比对,learner学习后得到的提案N对应的V[N,V]
 }
 
 func NewLearner(id int, nt network, acceptors ...int) *learner {
-	l := &learner{id: id, nt: nt, acceptors: make(map[int]accept)}
+	l := &learner{id: id, nt: nt, acceptors: make(map[int]accept),value:make(chan string)}
 	for _, a := range acceptors {
 		l.acceptors[a] = mes{typ: Accept}
 	}
 	return l
 }
 
-func (l *learner) learn() string {
+func (l *learner) GetValue() (v string ) {
+	select {
+	case v := <-l.value:
+		return v
+	case <-time.After(time.Second):
+		return
+	}
+}
+
+func (l *learner) learn()  {
 	for {
 		//f. 等待acceptor发送accept mes,
 		m, ok := l.nt.recv(time.Hour)
@@ -405,8 +414,8 @@ func (l *learner) learn() string {
 			continue
 		}
 		log.Printf("learner :%d has chosen proposal : %v ", l.id, accept)
-		l.value = accept.proposalValue()
-		return l.value
+		l.value <- accept.proposalValue()
+		return
 	}
 }
 
@@ -437,6 +446,7 @@ func (l *learner) chosen() (accept, bool) {
 func (l *learner) quorum() int {
 	return len(l.acceptors)/2 + 1
 }
+
 
 //f.2 从accepted消息中来进行比对,如果接收的提案N > learner存入的提案N,需要重新学习;否则就忽略
 func (l *learner) receiveAccept(accepted mes) {
