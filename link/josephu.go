@@ -51,7 +51,6 @@ func ListPer(first *Person) int {
 	return index
 }
 
-
 /*
 设编号为1，2，...n的n个人围坐一圈，约定编号为k（1<=k<=n）的人从1开始报数，
 数到m的那个人出列，它的下一位又从1开始报数，数到m的那个人又出列，依次类推，直到所有人出列为止，
@@ -81,13 +80,13 @@ func playGame(first *Person, startNum, countNum int) {
 	}
 
 	//数countNum下,删除当前first指针
-	for  {
+	for {
 		//数countNum下,删除当前first指针,即出圈
-		for j:=1;j<countNum;j++{
+		for j := 1; j < countNum; j++ {
 			first = first.next
 			tail = tail.next
 		}
-		fmt.Printf("id=%d出列 ->\n",first.no)
+		fmt.Printf("id=%d出列 ->\n", first.no)
 		first = first.next
 		tail.next = first
 
@@ -95,13 +94,13 @@ func playGame(first *Person, startNum, countNum int) {
 			break
 		}
 	}
-	fmt.Printf("id=%d出列 ->",first.no)
+	fmt.Printf("id=%d出列 ->", first.no)
 
 }
 
 //编写函数,构成单向环形列表
 func main() {
-	first := AddPerson(100)
+	first := AddPerson(7)
 	//ListPer(first)
-	playGame(first,8,31)
+	playGame(first, 1, 3)
 }

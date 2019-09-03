@@ -48,11 +48,11 @@ func TestN(t *testing.T) {
 func TestSingleProposer(t *testing.T) {
 	// 1,2,3,4,5 acceptors
 	// 1001 proposer
-	// 2001,2002 learner
-	pn := NewPaxosNet(1, 2, 3, 4, 5, 1001, 2001, 2002)
+	// 2001 learner
+	pn := NewPaxosNet(1, 2, 3, 4, 5, 1001, 2001)
 	ac := make([]*acceptor, 0)
 	for i := 1; i <= 5; i++ {
-		ac = append(ac, NewAcceptor(i, pn.agentNet(i), 2001, 2002))
+		ac = append(ac, NewAcceptor(i, pn.agentNet(i), 2001))
 	}
 
 	for _, a := range ac {
@@ -63,13 +63,11 @@ func TestSingleProposer(t *testing.T) {
 	go p.run()
 
 	l := NewLearner(2001, pn.agentNet(2001), 1, 2, 3, 4, 5)
-	l1 := NewLearner(2002, pn.agentNet(2001), 1, 2, 3, 4, 5)
-	go l1.learn()
 	go l.learn()
-	if l.value != l1.value {
-		t.Errorf("value = %s,wantValue = %s", l.GetValue(), wantValue)
+	v := l.GetValue()
+	if v != wantValue {
+		t.Errorf("value = %s wanted value = %s", v, wantValue)
 	}
-	time.Sleep(500 * time.Millisecond)
 }
 
 func TestTwoPropose(t *testing.T) {
