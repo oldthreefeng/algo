@@ -252,6 +252,7 @@ func (p *proposer) prepare() []mes {
 	}
 	return m
 }
+
 //c.1 更新proposer里面的acceptor,保证proposer存入的acceptor提案N为最新
 // 从acceptor接收的promise消息.
 func (p *proposer) receivePromise(promise mes) {
@@ -375,18 +376,18 @@ type learner struct {
 	id        int
 	acceptors map[int]accept
 	nt        network
-	value 	  chan string   //测试数据比对,learner学习后得到的提案N对应的V[N,V]
+	value     chan string //测试数据比对,learner学习后得到的提案N对应的V[N,V]
 }
 
 func NewLearner(id int, nt network, acceptors ...int) *learner {
-	l := &learner{id: id, nt: nt, acceptors: make(map[int]accept),value:make(chan string)}
+	l := &learner{id: id, nt: nt, acceptors: make(map[int]accept), value: make(chan string)}
 	for _, a := range acceptors {
 		l.acceptors[a] = mes{typ: Accept}
 	}
 	return l
 }
 
-func (l *learner) GetValue() (v string ) {
+func (l *learner) GetValue() (v string) {
 	select {
 	case v := <-l.value:
 		return v
@@ -395,7 +396,7 @@ func (l *learner) GetValue() (v string ) {
 	}
 }
 
-func (l *learner) learn()  {
+func (l *learner) learn() {
 	for {
 		//f. 等待acceptor发送accept mes,
 		m, ok := l.nt.recv(time.Hour)
@@ -446,7 +447,6 @@ func (l *learner) chosen() (accept, bool) {
 func (l *learner) quorum() int {
 	return len(l.acceptors)/2 + 1
 }
-
 
 //f.2 从accepted消息中来进行比对,如果接收的提案N > learner存入的提案N,需要重新学习;否则就忽略
 func (l *learner) receiveAccept(accepted mes) {

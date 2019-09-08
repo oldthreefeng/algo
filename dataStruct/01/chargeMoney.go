@@ -55,24 +55,32 @@ func findK(arr []int, K int) int {
 	}
 	return 0
 }
+
 //
 //（2）找出数组A[1..n]中元素的最大值和次最大值（本小题以数组元素的比较为标准操作）。
-func findM(arr []int) (ina, inb int) {
-	a, b := 0, 0
+func findM(arr []int) (maxIndex, secIndex int) {
+	var max, sec int
+	if arr[0] < arr[1] {
+		max, sec = arr[1], arr[0]
+		maxIndex, secIndex = 1, 0
+	} else {
+		max, sec = arr[0], arr[1]
+		maxIndex, secIndex = 0, 1
+	}
 	for k, v := range arr {
-		if a < v {
-			a = v
-			ina = k
+		if max < v {
+			max = v
+			maxIndex = k
 		}
 	}
 	for k, v := range arr {
-		if b < v && k != ina {
-			b = v
-			inb = k
+		if sec < v && k != maxIndex {
+			sec = v
+			secIndex = k
+		}
+	}
 
-		}
-	}
-	return ina, inb
+	return maxIndex, secIndex
 }
 
 func main() {
@@ -82,6 +90,6 @@ func main() {
 
 	arr := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 	fmt.Println(findK(arr, 8))
-	arr = []int{1, 2, 3, 4,6,80, 5, 6, 7, 8, 9, 10}
+	//arr = []int{-1, -2, -3, -4, -6, -80, -5, -6, -7, -8, -9, -10}
 	fmt.Println(findM(arr))
 }

@@ -13,13 +13,13 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter,r *http.Request) {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("hello, world v1"))
 	})
-	http.HandleFunc("/bye",sayBye)
+	http.HandleFunc("/bye", sayBye)
 	log.Println("start serve..v1")
-	log.Fatal(http.ListenAndServe(":4000",nil))
+	log.Fatal(http.ListenAndServe(":4000", nil))
 }
-func sayBye(w http.ResponseWriter,r *http.Request)  {
+func sayBye(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("bye bye... v1"))
 }

@@ -93,6 +93,3 @@ func (this *singleQueue) ShowQueue() { //front指向队首,不含第一个元素
 		fmt.Println()
 	}
 }
-
-
-

@@ -4,6 +4,8 @@
  */
 package search
 
+import "sort"
+
 /*
 输入n ( n<= 100,000)个整数，找出其中的两个数，
 它们之和等于整数m(假定肯定有解)。题中所有整数都能用int 表示 //百万量级的复杂度没问题.
@@ -15,14 +17,19 @@ package search
 //     复杂度log(n)，最坏要查找n-2次，所以查找这部分的复杂度也是O(n×log(n))这种解法总的复杂度是O(n×log(n))的。25
 
 //解法3: 将数组遍历,存入map,key值为原数组索引,原数组索引存入value值,如果能从map里面取出要找的数,说明存在,复杂度为o(n)
-func TwoSum(a []int,m int) []int  {
+func TwoSum(a []int, m int) []int {
 	tmp := make(map[int]int)
-	for k,v := range a{
-		n:= m-v	  //找到要找的数n
-		if x,ok := tmp[n];ok{ //在map找n,按索引查找,o(1)
-			return []int{k,x}
+	for k, v := range a {
+		n := m - v               //找到要找的数n
+		if x, ok := tmp[n]; ok { //在map找n,按索引查找,o(1)
+			return []int{k, x}
 		}
 		tmp[v] = k //将a里面的索引和相应的m-v存入map
 	}
 	return nil
+}
+
+func TwoSunSort(a []int, m int) []int {
+	sort.Ints(a)
+
 }

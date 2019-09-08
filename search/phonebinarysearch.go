@@ -18,12 +18,12 @@ import (
 )
 
 const (
-	CMCC  byte = iota + 0x01 //中国移动
-	CUCC                     //中国联通
-	CTCC                     //中国电信
-	CTCCv                    //电信虚拟运营商
-	CUCCv                    //联通虚拟运营商
-	CMCCv                    //移动虚拟运营商
+	CMCC             byte = iota + 0x01 //中国移动
+	CUCC                                //中国联通
+	CTCC                                //中国电信
+	CTCCv                               //电信虚拟运营商
+	CUCCv                               //联通虚拟运营商
+	CMCCv                               //移动虚拟运营商
 	IntLen           = 4
 	CharLen          = 1
 	HeadLength       = 8

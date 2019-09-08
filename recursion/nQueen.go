@@ -34,8 +34,8 @@ func NQueen(col int) {
 	for pos = 0; pos < N; pos++ { //逐个尝试第k个皇后的位置,遍历第k皇后的为止,
 		var j int
 		for j = 0; j < col; j++ {
-			if queenPos[j] == pos ||queenPos[j]-pos == col-j ||
-				queenPos[j]-pos == j-col{
+			if queenPos[j] == pos || queenPos[j]-pos == col-j ||
+				queenPos[j]-pos == j-col {
 				break
 			}
 		}
@@ -60,29 +60,29 @@ func put(boards []int, col int) {
 	}
 	for pos := 0; pos < size; pos++ {
 		boards[col] = pos
-		if safe(boards,col) {
-			put(boards,col+1)
+		if safe(boards, col) {
+			put(boards, col+1)
 		}
 	}
 }
 
 func safe(boards []int, col int) bool {
-	for c:=0;c<col ;c++{
-		if isAttack(boards,c,col) {
+	for c := 0; c < col; c++ {
+		if isAttack(boards, c, col) {
 			return false
 		}
 	}
 	return true
 }
 
-func isAttack(boards []int, c,col int) bool {
-	if boards[c] == boards[col]{
+func isAttack(boards []int, c, col int) bool {
+	if boards[c] == boards[col] {
 		return true
 	}
-	if boards[col] - boards[c] == c-col {
+	if boards[col]-boards[c] == c-col {
 		return true
 	}
-	if boards[col] - boards[c] == col-c{
+	if boards[col]-boards[c] == col-c {
 		return true
 	}
 	return false

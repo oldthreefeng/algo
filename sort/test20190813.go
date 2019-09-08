@@ -118,7 +118,7 @@ func main() {
 	//fmt.Println(arr)
 
 	var arr [num]int
-	for i := 0; i < num; i++{
+	for i := 0; i < num; i++ {
 		arr[i] = rand.Intn(900000)
 	}
 	start := time.Now().Unix()

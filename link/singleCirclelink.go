@@ -8,7 +8,7 @@ type CatNode struct {
 	next *CatNode
 }
 
-func InsertNode(head *CatNode, newNode *CatNode)  {
+func InsertNode(head *CatNode, newNode *CatNode) {
 
 	// 如果只有一个元素,构成单元数链表
 	if head.next == nil {

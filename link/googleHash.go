@@ -133,7 +133,7 @@ func (e *HashTable) Insert(emp *Emp) {
 		// 使用对应的链表进行添加
 		e.Link[linkNo].Insert(emp)
 	} else {
-		fmt.Println(emp.ID,"emp is exist")
+		fmt.Println(emp.ID, "emp is exist")
 	}
 }
 

@@ -4,7 +4,6 @@ import (
 	"fmt"
 )
 
-
 func QuickSort(left, right int, arr []int) {
 	l, r := left, right
 	pivot := arr[(left+right)/2]
@@ -42,8 +41,8 @@ func QuickSort(left, right int, arr []int) {
 
 func main() {
 	arr := []int{32, 1, 7, -3, 10, 16, 8, -25, 2, 100}
-	QuickSort(0, len(arr)-1, arr)
-	//QuickSort1(arr, 0, len(arr)-1)
+	//QuickSort(0, len(arr)-1, arr)
+	QuickSort1(arr, 0, len(arr)-1)
 	fmt.Println(arr)
 
 }
@@ -55,6 +54,7 @@ func QuickSort1(a []int, s, e int) {
 	if s >= e { //start end
 		return
 	}
+	//起点位置
 	k := a[s]
 	var i, j = s, e
 	for i != j {

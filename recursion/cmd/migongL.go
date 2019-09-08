@@ -45,12 +45,11 @@ func main() {
 	i := len(maze) - 1
 	j := len(maze[0]) - 1
 
-	fmt.Printf("走出迷宫总共移动的%d步\n",steps[i][j])
-
+	fmt.Printf("走出迷宫总共移动的%d步\n", steps[i][j])
 
 	// 计算最优路径
 	last := steps[i][j]
-	lookupPath := []Point{Point{i,j}}
+	lookupPath := []Point{Point{i, j}}
 
 	for last > 0 {
 		last = last - 1
@@ -61,24 +60,21 @@ func main() {
 
 			val, _ := next.At(steps)
 			if val == last {
-				lookupPath = append(lookupPath,next)
+				lookupPath = append(lookupPath, next)
 				//fmt.Println(last,index,next)
 				break
 			}
 		}
 
-
 	}
 
 	// 反转lookupPath
 	newPath := []Point{}
-	for index,_ := range lookupPath {
+	for index, _ := range lookupPath {
 		n := len(lookupPath) - index - 1
 		newPath = append(newPath, lookupPath[n])
 	}
 
 	fmt.Printf("最优路径:%d", newPath)
 
-
 }
-

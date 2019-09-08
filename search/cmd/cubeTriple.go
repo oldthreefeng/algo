@@ -10,5 +10,5 @@ package main
 import "gogs.wangke.co/go/algo/search"
 
 func main() {
-	search.Period(22,28,33,1)
+	search.Period(22, 28, 33, 1)
 }

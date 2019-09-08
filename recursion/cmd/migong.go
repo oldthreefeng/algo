@@ -24,13 +24,13 @@ func main() {
 		m[i][0] = 1
 		m[i][16] = 1
 	}
-	m[3][1]=1
-	m[3][2]=1
+	m[3][1] = 1
+	m[3][2] = 1
 	//TODO 优化最佳线路
 	//m[1][2] =1
-	m[2][2] =1
+	m[2][2] = 1
 
-	recursion.SetWay(&m,1,1)
+	recursion.SetWay(&m, 1, 1)
 	fmt.Println("探测完毕")
 
 	for _, v := range m {

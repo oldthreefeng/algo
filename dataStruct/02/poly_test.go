@@ -14,6 +14,6 @@ import (
 
 func TestCreatePoly(t *testing.T) {
 	s := &PolyNode{}
-	fmt.Scanln(&s.coef,s.exp)
-	fmt.Print(s.coef,s.exp)
+	fmt.Scanln(&s.coef, s.exp)
+	fmt.Print(s.coef, s.exp)
 }

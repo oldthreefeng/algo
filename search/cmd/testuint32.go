@@ -62,18 +62,18 @@ import (
 //	const rwx = "rwxrwxrwx"
 //	for i, c := range rwx {
 //		if m&(1<<uint(9-1-i)) != 0 {
-			// 如果 & 结果不为零; 说明为真 ; 将该位置为相应的字符;否则置空
-			// 第一位即最高位为1,可读权限 1 0000 0000  = 400
-			// 第二位为1               0 1000 0000  = 200
-			// 第三位为1               0 0100 0000  = 100
-			// rwx ==> 700
-			// 第四位为1               0 0010 0000  = 040
-			// 第五位为1               0 0001 0000  = 020
-			// 第六位为1               0 0000 1000  = 010
-			// rwx ==> 070
-			// 第七位为1               0 0000 0100  = 004
-			// 第八位为1               0 0000 0010  = 002
-			// 第九位为1               0 0000 0001  = 001
+// 如果 & 结果不为零; 说明为真 ; 将该位置为相应的字符;否则置空
+// 第一位即最高位为1,可读权限 1 0000 0000  = 400
+// 第二位为1               0 1000 0000  = 200
+// 第三位为1               0 0100 0000  = 100
+// rwx ==> 700
+// 第四位为1               0 0010 0000  = 040
+// 第五位为1               0 0001 0000  = 020
+// 第六位为1               0 0000 1000  = 010
+// rwx ==> 070
+// 第七位为1               0 0000 0100  = 004
+// 第八位为1               0 0000 0010  = 002
+// 第九位为1               0 0000 0001  = 001
 //			// rwx ==> 007
 //			buf[w] = byte(c)
 //		} else {
@@ -88,9 +88,9 @@ func main() {
 	var m1 os.FileMode
 	var m2 uint16
 	m2 = 0775
-	fmt.Printf("%b\n",m2)
+	fmt.Printf("%b\n", m2)
 	m1 = 0775 //每一位都是8进制, 775 -> 111111101
-	fmt.Printf("%b\n",m1)
+	fmt.Printf("%b\n", m1)
 	fmt.Println(m1.String())
 	fmt.Println(os.ModeDir.String())
 
@@ -109,7 +109,6 @@ func main() {
 	fmt.Println(biu.ToBinaryString(os.ModeSticky))
 	fmt.Println(biu.ToBinaryString(os.ModeIrregular))
 	fmt.Println(biu.ToBinaryString(os.ModeType))
-
 
 }
 

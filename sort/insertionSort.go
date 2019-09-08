@@ -23,8 +23,8 @@ func upInsertionSort(arr *[5]int) {
 		var j int
 		for j = i - 1; j >= 0 &&
 			//从小到大的顺序排序.
-			arr[j] > insertVal/*左边的数比要插入的数据大,继续找 */;
-			j-- {
+			arr[j] > insertVal; /*左边的数比要插入的数据大,继续找 */
+		j-- {
 			arr[j+1] = arr[j] //将arr[j]右移一位.
 		}
 		arr[j+1] = insertVal //如果j == i-1,没有进行比较,赋值依旧可以

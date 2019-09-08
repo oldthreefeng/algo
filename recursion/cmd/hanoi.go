@@ -6,8 +6,8 @@ package main
 
 import "gogs.wangke.co/go/algo/recursion"
 
-func main()  {
+func main() {
 
 	var n = 3
-	recursion.Hanoi(n,"A","B","C")
+	recursion.Hanoi(n, "A", "B", "C")
 }

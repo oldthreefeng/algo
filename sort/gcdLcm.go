@@ -19,5 +19,5 @@ func lcm(a, b int) int {
 func main() {
 	a := gcd(35, 215)
 	b := lcm(49, 35)
-	fmt.Println(a, b)  // 5 245
+	fmt.Println(a, b) // 5 245
 }

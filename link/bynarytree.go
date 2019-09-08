@@ -13,7 +13,7 @@ type Hero struct {
 func PreOrder(h *Hero) {
 	if h != nil {
 		fmt.Printf("no = %d name = %s \n", h.No, h.Name)
-		PreOrder(h.Left)  //递归
+		PreOrder(h.Left) //递归
 		PreOrder(h.Right)
 
 	}

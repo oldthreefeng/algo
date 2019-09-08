@@ -2,7 +2,7 @@
  * @time: 2019-08-19 22:53
  * @author: louis
  */
-package search   //TODO
+package search //TODO
 
 /*
 
@@ -19,4 +19,3 @@ package search   //TODO
 其中平衡状态用up，down或even表示，分别为右端高、右端低和平衡。天平左右的硬币数总是相等的。
 K is the counterfeit coin and it is light
 */
-

@@ -13,5 +13,5 @@ func Hanoi(n int, src, mid, dest string) {
 	}
 	Hanoi(n-1, src, dest, mid) // 把n-1的src移动到mid,相当于中转站
 	fmt.Printf("%s -> %s\n", src, dest)
-	Hanoi(n-1, mid, src, dest)  //把n-1的mid移动到dest
+	Hanoi(n-1, mid, src, dest) //把n-1的mid移动到dest
 }

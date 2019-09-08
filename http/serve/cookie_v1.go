@@ -29,9 +29,9 @@ func Cookie(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("<b>设置cookie成功.<b>\n"))
 }
 
-func ReadCookie(w http.ResponseWriter, r *http.Request)  {
-	h:= r.Header["Cookie"]
-	fmt.Fprintln(w,h)
+func ReadCookie(w http.ResponseWriter, r *http.Request) {
+	h := r.Header["Cookie"]
+	fmt.Fprintln(w, h)
 }
 
 func Cookie2(w http.ResponseWriter, r *http.Request) {
@@ -43,10 +43,10 @@ func Cookie2(w http.ResponseWriter, r *http.Request) {
 		MaxAge: 120,
 	}
 
-	w.Header().Set("Set-Cookie",ck.String())
+	w.Header().Set("Set-Cookie", ck.String())
 
 	ck2, _ := r.Cookie("myCookie")
 	//cs := r.Cookies()
-	fmt.Fprintln(w,ck2)
+	fmt.Fprintln(w, ck2)
 	//fmt.Fprintln(w,cs)
 }

@@ -2,20 +2,20 @@
  * @time: 2019-08-20 21:42
  * @author: louis
  */
-package recursion  //TODO
+package recursion //TODO
 
 func ExpressionValue(exp string) int {
 	return 0
 }
 
-func TermValue()  {
+func TermValue() {
 
 }
 
-func FactorValue()  int {
+func FactorValue() int {
 	return 0
 }
 
-func IsDigit()  {
+func IsDigit() {
 
 }

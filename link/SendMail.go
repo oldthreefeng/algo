@@ -10,7 +10,6 @@ import (
 	"time"
 )
 
-
 func main() {
 	from := beego.AppConfig.String("from")
 	password := beego.AppConfig.String("password")

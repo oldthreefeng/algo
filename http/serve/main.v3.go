@@ -59,7 +59,7 @@ type myHandlerV3 struct { //实现Handler这个接口,
 func (mh *myHandlerV3) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if h, ok := m[r.URL.String()]; ok { //能匹配到map里面的url,则调用map里面对应的函数
 		h(w, r)
-		return  //成功调用就返回.不用调用本身函数
+		return //成功调用就返回.不用调用本身函数
 	}
 	io.WriteString(w, "hello my handler v3,the request  URL is :"+r.URL.String())
 	//w.Write([]byte("hello my handler v3,the request  URL is : " + r.URL.String()))

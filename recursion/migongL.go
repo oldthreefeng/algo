@@ -114,4 +114,3 @@ func Walk(maze [][]int, start, end Point) [][]int {
 
 	return steps
 }
-

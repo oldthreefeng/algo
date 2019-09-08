@@ -10,8 +10,8 @@ import (
 )
 
 func main() {
-	var a = []float64{6,6,6,6}
-	if recursion.Count24(a,4) {
+	var a = []float64{6, 6, 6, 6}
+	if recursion.Count24(a, 4) {
 		fmt.Println("YES")
 	} else {
 		fmt.Println("NO")

@@ -18,17 +18,17 @@ func SetWay(m *[18][17]int, i, j int) bool {
 			//	return true
 			//} else if SetWay(m,i,j+1) {
 			//	return true  SetWay(m,i+1,j)  SetWay(m,i-1,j)
-			if SetWay(m,i+1,j) { //下右上左
+			if SetWay(m, i+1, j) { //下右上左
 				return true
-			} else if SetWay(m,i,j+1) {
+			} else if SetWay(m, i, j+1) {
 				return true
-			} else if  SetWay(m,i-1,j) {
+			} else if SetWay(m, i-1, j) {
 				return true
-			} else if SetWay(m,i,j-1) {
+			} else if SetWay(m, i, j-1) {
 				return true
 
 			} else { //是死路
-				m[i][j] =3
+				m[i][j] = 3
 				return false
 			}
 		} else {
@@ -37,5 +37,3 @@ func SetWay(m *[18][17]int, i, j int) bool {
 		}
 	}
 }
-
-

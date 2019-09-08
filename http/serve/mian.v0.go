@@ -19,7 +19,7 @@ import (
 	"strings"
 )
 
-const tplName  = "http/serve/form.gtpl"
+const tplName = "http/serve/form.gtpl"
 
 func sayHelloName(w http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
@@ -53,70 +53,70 @@ func Form(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("username:", r.Form["username"])
 		fmt.Println("username:", template.HTMLEscapeString(r.Form.Get("username")))
 		fmt.Println("password:", template.HTMLEscapeString(r.Form.Get("password")))
-		for k,v :=range r.Form {
-			fmt.Println(k,v)
+		for k, v := range r.Form {
+			fmt.Println(k, v)
 		}
 		//必选字段
-		if len(r.Form["username"][0])==0 {
-			fmt.Fprintf(w,"用户名不能为空")
+		if len(r.Form["username"][0]) == 0 {
+			fmt.Fprintf(w, "用户名不能为空")
 			return
 		}
 
 		//年龄
 		if !isInt(r.Form.Get("age")) {
-			fmt.Fprintf(w,"年龄必须为正数")
+			fmt.Fprintf(w, "年龄必须为正数")
 			return
 		}
 
 		//中文
 		if !isHan(r.Form.Get("hanname")) {
-			fmt.Fprintf(w,"请输入中文名")
+			fmt.Fprintf(w, "请输入中文名")
 			return
 		}
 
 		//中文
 		if !isEng(r.Form.Get("engname")) {
-			fmt.Fprintf(w,"请输入正确的英文名")
+			fmt.Fprintf(w, "请输入正确的英文名")
 			return
 		}
 		//邮箱
 		if !isEmail(r.Form.Get("email")) {
-			fmt.Fprintf(w,"请输入正确的邮箱")
+			fmt.Fprintf(w, "请输入正确的邮箱")
 			return
 		}
 		//手机号
 		if !isMobile(r.Form.Get("mobile")) {
-			fmt.Fprintf(w,"请输入正确的手机号")
+			fmt.Fprintf(w, "请输入正确的手机号")
 			return
 		}
 		//下拉框
 		if !isInSingleSelect(r.Form.Get("fruit")) {
-			fmt.Fprintf(w,"select not exist")
+			fmt.Fprintf(w, "select not exist")
 			return
 		}
 		//性别
 		if !isGender(r.Form.Get("gender")) {
-			fmt.Fprintf(w,"性别只能为男女")
+			fmt.Fprintf(w, "性别只能为男女")
 			return
 		}
 
 		//复选框
 		if !isInMultiSelect(r.Form["interest"]) {
-			fmt.Fprintf(w,"请选择正确爱好")
+			fmt.Fprintf(w, "请选择正确爱好")
 			return
 		}
 		//身份证
 		if !isID(r.Form.Get("usercard")) {
-			fmt.Fprintf(w,"身份号有误")
+			fmt.Fprintf(w, "身份号有误")
 			return
 		}
 
-		fmt.Fprintf(w,"表单验证成功")
+		fmt.Fprintf(w, "表单验证成功")
 	}
 }
 
-func isInt(s string) bool  {
-	m,_:= regexp.MatchString(`^[0-9]+$`,s)
+func isInt(s string) bool {
+	m, _ := regexp.MatchString(`^[0-9]+$`, s)
 	return m
 }
 

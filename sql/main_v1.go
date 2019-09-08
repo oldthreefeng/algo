@@ -20,8 +20,8 @@ func checkErr(err error) {
 }
 
 type userinfo struct {
-	uid int
-	username,department,created string
+	uid                           int
+	username, department, created string
 }
 
 /*
@@ -44,35 +44,35 @@ CREATE TABLE `userdetail` (
 func main() {
 	//username:password@protocol(address)/dbname?param=value
 	//protocol : tcp  address: ip:port
-	db,err:= sql.Open("mysql","root:wangke123@tcp(101.132.33.146:3306)/testgo?charset=utf8")
+	db, err := sql.Open("mysql", "root:wangke123@tcp(101.132.33.146:3306)/testgo?charset=utf8")
 	checkErr(err)
 	defer db.Close()
 	//插入数据
 	//stms,err := db.Prepare("INSERT INTO userinfo SET username=?,department=?,created=?")
-	res,err := db.Exec("INSERT INTO userinfo(username,department,created) VALUES (?,?,?)","louis","研发部","2019-08-24")
+	res, err := db.Exec("INSERT INTO userinfo(username,department,created) VALUES (?,?,?)", "louis", "研发部", "2019-08-24")
 	checkErr(err)
 	//res,err := stms.Exec("louis","研发部","2019-08-24")
 	//checkErr(err)
-	id,err:= res.LastInsertId()
+	id, err := res.LastInsertId()
 	checkErr(err)
 	fmt.Println(id)
 
 	//更新数据
-	stms,err := db.Prepare("UPDATE userinfo SET username=? WHERE uid=?")
+	stms, err := db.Prepare("UPDATE userinfo SET username=? WHERE uid=?")
 	checkErr(err)
-	res,err = stms.Exec("louisHon",id)
+	res, err = stms.Exec("louisHon", id)
 	checkErr(err)
-	affect,err := res.RowsAffected()
+	affect, err := res.RowsAffected()
 	checkErr(err)
 	fmt.Println(affect)
 
 	//查询数据
 
-	rows,err := db.Query("SELECT * from userinfo")
+	rows, err := db.Query("SELECT * from userinfo")
 	checkErr(err)
 	for rows.Next() {
 		user := userinfo{}
-		err := rows.Scan(&user.uid,&user.username,&user.department,&user.created)
+		err := rows.Scan(&user.uid, &user.username, &user.department, &user.created)
 		checkErr(err)
 		fmt.Println(user)
 	}

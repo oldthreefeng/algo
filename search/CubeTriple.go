@@ -15,11 +15,10 @@ import "fmt"
 p e i 同时出现的日子;  体力高峰p 23 ; 情商高峰e 28 ; 智力高峰i 33
 */
 
-
 func Period(p, e, i, d int) {
 	var k int
-	for k = d+1 ; k < 100000; k++ {
-		if (k-i)%33 == 0 && (k-p)%22 ==0 && (k-e)%28 ==0 {
+	for k = d + 1; k < 100000; k++ {
+		if (k-i)%33 == 0 && (k-p)%22 == 0 && (k-e)%28 == 0 {
 			fmt.Printf("the next triple peak occurs in %d days.", k-d)
 			break
 		}

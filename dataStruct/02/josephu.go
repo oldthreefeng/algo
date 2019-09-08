@@ -12,9 +12,9 @@ import (
 )
 
 type Jose struct {
-	no       int
+	no int
 	//password int
-	next     *Jose
+	next *Jose
 }
 
 //创建数为n的环,返回尾结点.
@@ -26,7 +26,7 @@ func CreateJo(n int) *Jose {
 	}
 	for i := 1; i <= n; i++ {
 		q := &Jose{
-			no:       i,
+			no: i,
 		}
 		//第一个元素,
 		if i == 1 {
@@ -63,7 +63,7 @@ func ListJo(tail *Jose) (index int) {
 	return index
 }
 
-func Game(tail *Jose, start,password int) {
+func Game(tail *Jose, start, password int) {
 	// 如果tail为空,或者开始的数大于约瑟夫环的总数
 	if tail.next == nil || start > ListJo(tail) {
 		return
@@ -95,7 +95,7 @@ func Game(tail *Jose, start,password int) {
 	fmt.Printf("id = %d,出列 ->\n", first.no)
 }
 
-func main()  {
+func main() {
 	tail := CreateJo(7)
-	Game(tail,1,3)
+	Game(tail, 1, 3)
 }

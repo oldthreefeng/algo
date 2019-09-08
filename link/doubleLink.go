@@ -1,9 +1,7 @@
 package main
 
 import (
-
 	"fmt"
-
 )
 
 //定义一个节点
@@ -54,11 +52,11 @@ func InsertHeroNodeByNo(head *HeroNode, newHeroNode *HeroNode) {
 		fmt.Println("已存在no", newHeroNode.no)
 	} else {
 		newHeroNode.next = temp.next //ok
-		newHeroNode.pre = temp  //ok
-		if temp.next !=nil {
+		newHeroNode.pre = temp       //ok
+		if temp.next != nil {
 			temp.next.pre = newHeroNode //ok 让temp的下一个节点的前节点指向新节点
 		}
-		temp.next = newHeroNode     //ok让新节点的下一个节点指向新节点
+		temp.next = newHeroNode //ok让新节点的下一个节点指向新节点
 	}
 
 }
@@ -86,7 +84,6 @@ func DelHeroNode(head *HeroNode, id int) {
 			temp.next.pre = temp //ok
 		}
 
-
 	} else {
 		fmt.Println("sorry,删除的不存在", id)
 	}
@@ -101,7 +98,7 @@ func ListHeroNode(head *HeroNode) {
 	//}
 	for {
 		fmt.Printf("[%d,%s,%s,%p,%p,%p] <==>\n",
-			temp.no, temp.name, temp.nickName, temp.pre,temp, temp.next) //因为
+			temp.no, temp.name, temp.nickName, temp.pre, temp, temp.next) //因为
 		if temp.next == nil {
 			break
 		}
@@ -113,14 +110,14 @@ func ListHeroNode(head *HeroNode) {
 func ListHeroNode2(head *HeroNode) {
 	temp := head
 	for {
-		if temp.next == nil{
+		if temp.next == nil {
 			break
 		}
 		temp = temp.next
 	}
 	for {
 		fmt.Printf("[%d,%s,%s,%p,%p,%p] <==>\n",
-			temp.no, temp.name, temp.nickName, temp.pre,temp, temp.next)
+			temp.no, temp.name, temp.nickName, temp.pre, temp, temp.next)
 		if temp.pre == nil {
 			break
 		}
@@ -177,4 +174,3 @@ func main() {
 	//6. 继续显示
 	//ListHeroNode(head)
 }
-

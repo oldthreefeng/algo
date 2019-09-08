@@ -5,12 +5,11 @@
 package recursion
 
 func Stairs(n int) int {
-	if n==1{
+	if n == 1 {
 		return 1
 	}
-	if n==2 {
+	if n == 2 {
 		return 2
 	}
-	return Stairs(n-2) +Stairs(n-1)
+	return Stairs(n-2) + Stairs(n-1)
 }
-

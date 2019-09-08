@@ -22,9 +22,9 @@ func FindX() float64 {
 	y = f(root)
 
 	for y > EPS || -y > EPS { //精度保持在EPS范围内
-		if y > 0 { // 说明
+		if y > 0 { // 说明根在x1和root之间,所以在x1和root之间查找
 			x2 = root
-		} else {
+		} else { // 说明根在root和x2之间, 所以在root和x2之间查找
 			x1 = root
 		}
 		root = x1 + (x2-x1)/2
