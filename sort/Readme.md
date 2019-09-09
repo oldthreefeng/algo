@@ -117,3 +117,9 @@ func qsort(data []int) {
 ![图片](https://upload.wikimedia.org/wikipedia/commons/6/6a/Sorting_quicksort_anim.gif)
 
 [quickSort代码](quicksort.go)
+
+## mergeSort
+
+采用分治的典型算法
+
+![图片](../images/mergesort.gif)

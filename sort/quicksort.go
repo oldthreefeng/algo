@@ -1,10 +1,6 @@
-package main
+package sort
 
-import (
-	"fmt"
-)
-
-func QuickSort(left, right int, arr []int) {
+func QuickSort(arr []int, left, right int ) {
 	l, r := left, right
 	pivot := arr[(left+right)/2]
 	for l < r {
@@ -31,21 +27,14 @@ func QuickSort(left, right int, arr []int) {
 	}
 	//向左递归,如果仅大于零,存在r和l相等的情况,就递归在里面了
 	if r-left > 1 {
-		QuickSort(left, r, arr)
+		QuickSort(arr, left, r)
 	}
 	//向右递归
 	if right-l > 1 {
-		QuickSort(l, right, arr)
+		QuickSort(arr, l, right)
 	}
 }
 
-func main() {
-	arr := []int{32, 1, 7, -3, 10, 16, 8, -25, 2, 100}
-	//QuickSort(0, len(arr)-1, arr)
-	QuickSort1(arr, 0, len(arr)-1)
-	fmt.Println(arr)
-
-}
 func Swap(a []int, i, j int) {
 	a[i], a[j] = a[j], a[i]
 }

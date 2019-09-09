@@ -1,8 +1,6 @@
-package main
+package sort
 
-import "fmt"
-
-func selectSort(arr *[5]int) *[5]int {
+func SelectSort(arr *[5]int) *[5]int {
 	// *取值符 ， &取址符
 	lens := len(arr)
 	for i := 0; i < lens-1; i++ {
@@ -20,14 +18,8 @@ func selectSort(arr *[5]int) *[5]int {
 	return arr
 }
 
-func main() {
-	arr := [5]int{11, 3, 98, 76, 32}
-	fmt.Println(arr)
-	selectSort(&arr)
-	fmt.Println(arr)
-
-}
 
 //TODO  other Algorithm in sort
 // add MergeSort 20190821
 // add QuickSort 20190821
+// add arrangeRight 20190908

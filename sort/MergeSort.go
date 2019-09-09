@@ -58,13 +58,7 @@
 //	fmt.Println(arr)
 //}
 
-package main
-
-import (
-	"fmt"
-	"math/rand"
-	"time"
-)
+package sort
 
 // 合并 [s,e] 两部分数据，m 左半部分的终点，m + 1 是右半部分的起点
 func merge(arr []int, s int, m int, e int) {
@@ -112,53 +106,3 @@ func MergeSort(arr []int, s int, e int) {
 	merge(arr, s, mid, e)
 }
 
-func main() {
-	//arr := []int{3, 1, 2, 5, 6, 43, 4}
-	//ArrangeRight(arr,0, len(arr)-1,4)
-	//MergeSort(arr, len(arr)-5, len(arr)-1)
-	//fmt.Println(arr[len(arr)-4:])
-	n := 100000
-	m := 1000
-	var arr []int
-	for i:=0;i< n;i++ {
-		//arr= append (arr, i) //刚好生成的有序数组,时间会超时
-		arr = append(arr, rand.Intn(n))
-	}
-	start := time.Now().Unix()
-	ArrangeRight(arr,0, n-1,m)
-	MergeSort(arr, n-m, n-1)
-	end := time.Now().Unix()
-	fmt.Print(end-start)
-}
-
-func ArrangeRight(arr []int, s, e, k int) {
-	if s >= e {
-		return
-	}
-	if k == e-s+1 {
-		return
-	}
-	key := arr[s]
-	i, j := s, e
-	//前a[s]大的全部排到右边
-	for i != j {
-		for j > i && arr[j] >= key {
-			j--
-		}
-		arr[i], arr[j] = arr[j], arr[i]
-		for j > i && arr[i] <= key {
-			i++
-		}
-		arr[i], arr[j] = arr[j], arr[i]
-	}
-	// 如果当前的t[s]的位置等于k.前k大的已经排序完毕
-	a := e - i + 1
-	if k == a {
-		return
-	}else if k < a {
-		ArrangeRight(arr, i+1, e, k)
-	}else {
-		ArrangeRight(arr, s, i-1, k-a)
-	}
-
-}
