@@ -102,6 +102,15 @@ func Test05(data []int) {
 	Test05(data[head+1:])
 }
 
+func power(a,b int) (res int) {
+	res =1
+	for b!=0 {
+		res *= a
+		b--
+	}
+	return res
+}
+
 func main() {
 	//arr := [num]int{-9, 78, 0, 23, -567, 70, 123, 90, -23, 10}
 	//fmt.Println("初始", arr)
@@ -128,6 +137,8 @@ func main() {
 	Test04(0, len(arr)-1, &arr)
 	end := time.Now().Unix()
 	fmt.Println("SelectSort", end-start)
+
+	fmt.Println(power(8,2))
 }
 
 //对100000的无序数组进行排序:
