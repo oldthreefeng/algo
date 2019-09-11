@@ -80,6 +80,15 @@ func (l *LinkPolyNode) PrintItems() {
 	}
 }
 
+func (l *LinkPolyNode) GetSize() (count int) {
+	cur := l.head
+	for cur != nil{
+		count++
+		cur = cur.next
+	}
+	return count
+}
+
 // p,q 为当前计算节点;  rear为指向和多项式链表的尾节点
 // p.exp < q.exp ; 节点p所指的节点是"和多项式"中的一项,p后移
 // p.exp = q.exp ; 合并同类项.
@@ -143,7 +152,7 @@ func (l *LinkPolyNode) Add(lb *LinkPolyNode) (lc *LinkPolyNode) {
 }
 
 // 创建头节点LinkPolyNode
-func CreateLinkPoly() (l *LinkPolyNode) {
+func NewLinkPoly() (l *LinkPolyNode) {
 	l = &LinkPolyNode{}
 	l.head = &PolyNode{}
 	rear := l.head
@@ -169,10 +178,10 @@ func main() {
 	//d := Add(a,b1)
 	//ShowPoly(d)
 	fmt.Println("请输入A多项式1*x^2==>(1 2),系数为0表示输入结束")
-	a := CreateLinkPoly()
+	a := NewLinkPoly()
 	a.PrintItems()
 	fmt.Println("请输入B多项式,系数为0表示输入结束")
-	b := CreateLinkPoly()
+	b := NewLinkPoly()
 	b.PrintItems()
 	fmt.Println("加法(0),减法(1):请输入:(默认为加法)")
 	var key byte
@@ -195,18 +204,20 @@ func main() {
 }
 
 /*
+请输入A多项式1*x^2==>(1 2),系数为0表示输入结束
 7 0
 3 1
 9 8
 5 17
 0
-
-A(x) = 7x^0+3x^1+9x^8+5x^17
+7x^0+3x^1+9x^8+5x^17
+请输入B多项式,系数为0表示输入结束
 8 1
 22 7
 -9 8
 0
-B(X)=8x^1+22x^7-9x^8
-和:7x^0+11x^1+22x^7+5x^17
-差:7x^0-5x^1-22x^7+18x^8+5x^17
+8x^1+22x^7-9x^8
+加法(0),减法(1):请输入:(默认为加法)
+
+7x^0+11x^1+22x^7+5x^17
 */
