@@ -118,7 +118,11 @@ func main() {
 		Top:    -1,
 	}
 
+<<<<<<< HEAD
 	exp := "30+30*2-4*2-3*2"
+=======
+	exp := "30+30*6-4*2-6"
+>>>>>>> ddada35... add fix exp in stack
 	//定义一个index ，帮助扫描exp
 	index := 0
 	//为了配合运算，我们定义需要的变量
