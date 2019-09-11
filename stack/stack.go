@@ -130,17 +130,17 @@ func Exp(exp string) (res int)  {
 			// 如果operStack是空栈,直接入栈;
 			// 并将数栈也pop出两个数,进行运算,
 			// 将运算的结果push到数栈,符号再入符号栈
-			if oprStack.Top == -1 {
+			if oprStack.IsEmpty() {
 				oprStack.Push(temp)
 			} else {
 				//不是空栈的话,如果栈顶的运算符优先级,
-				// 大于当前准备入栈的运算符优先级,先pop出栈
-				// 例如 栈顶运算符为 * ,准备 入栈的运算符为 + ,
-				// 则先出栈. 并从操作栈取出两个操作数进行运算,
-				// 再把结果压入操作栈==>
-				// 继续进行比较, 如果栈顶的运算符优先级,
-				// 大于当前准备入栈的运算符优先级,先pop出栈.直到栈为空.
-				// 执行的最多次数为运算栈的Size+1次.
+				//大于当前准备入栈的运算符优先级,先pop出栈
+				//例如 栈顶运算符为 * ,准备 入栈的运算符为 + ,
+				//则先出栈. 并从操作栈取出两个操作数进行运算,
+				//再把结果压入操作栈==>
+				//继续进行比较, 如果栈顶的运算符优先级,
+				//大于当前准备入栈的运算符优先级,先pop出栈.直到栈为空.
+				//执行的最多次数为运算栈的Size+1次.
 				//fmt.Println(oprStack.Nice(oprStack.arr[oprStack.Top]), oprStack.Nice(temp))
 				for i:=0; i<= oprStack.Size();i++{
 					if oprStack.Nice(oprStack.arr[oprStack.Top]) >=
@@ -180,7 +180,7 @@ func Exp(exp string) (res int)  {
 	// 优先级高的已经计算完
 
 	for { //为空就弹出
-		if oprStack.Top == -1 {
+		if oprStack.IsEmpty() {
 			break
 		}
 		a, _ = numStack.Pop()
