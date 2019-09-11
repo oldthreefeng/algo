@@ -25,51 +25,51 @@ func help() string {
 `
 }
 
-func (this *circleQueue) Push(val int) (err error) {
-	if this.IsFull() {
+func (c *circleQueue) Push(val int) (err error) {
+	if c.IsFull() {
 		return errors.New("queue full")
 	}
-	// this.tail不含队尾元素
-	this.array[this.tail] = val
-	this.tail = (this.tail + 1) % maxSize
+	// c.tail不含队尾元素
+	c.array[c.tail] = val
+	c.tail = (c.tail + 1) % maxSize
 	return
 }
-func (this *circleQueue) Pop() (val int, err error) {
-	if this.IsEmpty() {
+func (c *circleQueue) Pop() (val int, err error) {
+	if c.IsEmpty() {
 		return 0, errors.New("queue empty")
 	}
 	//取出数据,head包含队首元素
-	val = this.array[this.head]
-	this.head = (this.head + 1) % maxSize
+	val = c.array[c.head]
+	c.head = (c.head + 1) % maxSize
 	return
 }
 
-func (this *circleQueue) ListQueue() {
-	size := this.Size()
+func (c *circleQueue) ListQueue() {
+	size := c.Size()
 	if size == 0 {
 		fmt.Println("empty queue")
 	}
 	//设计辅助变量
-	temphead := this.head
-	for i := this.head; i < size; i++ {
-		fmt.Printf("arr[%d]=%d\t", temphead, this.array[temphead])
+	temphead := c.head
+	for i := c.head; i < size; i++ {
+		fmt.Printf("arr[%d]=%d\t", temphead, c.array[temphead])
 		temphead = (temphead + 1) % maxSize
 	}
 }
 
 //判断环形队列是否满
-func (this *circleQueue) IsFull() bool {
-	return (this.tail+1)%maxSize == this.head
+func (c *circleQueue) IsFull() bool {
+	return (c.tail+1)%maxSize == c.head
 }
 
 //判断环形队列是否空
-func (this *circleQueue) IsEmpty() bool {
-	return this.head == this.tail
+func (c *circleQueue) IsEmpty() bool {
+	return c.head == c.tail
 }
 
 //取出环形队列有多少元素
-func (this *circleQueue) Size() int {
-	return (this.tail + maxSize - this.head) % maxSize
+func (c *circleQueue) Size() int {
+	return (c.tail + maxSize - c.head) % maxSize
 }
 
 func main() {
