@@ -139,6 +139,7 @@ func main() {
 	fmt.Println("SelectSort", end-start)
 
 	fmt.Println(power(8,2))
+	
 }
 
 //对100000的无序数组进行排序:
