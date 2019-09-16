@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"strconv"
 )
@@ -21,28 +20,28 @@ func (s *Stack) IsFull() bool {
 	return s.Top == MaxTop-1
 }
 
-func (s *Stack) Size() int  {
+func (s *Stack) Size() int {
 	return len(s.arr[:s.Top])
 }
 
-func (s *Stack) Push(val int) (err error) {
+func (s *Stack) Push(val int) (b bool) {
 	if s.IsFull() {
-		return errors.New("Stack Full")
+		return false
 	}
 	s.Top++
 	s.arr[s.Top] = val
 	fmt.Printf("stack push  %#v\n", val)
-	return
+	return true
 }
 
-func (s *Stack) Pop() (val int, err error) {
+func (s *Stack) Pop() (val int, b bool) {
 	if s.IsEmpty() {
-		return 0, errors.New("Stack Empty")
+		return 0,false
 	}
 	val = s.arr[s.Top]
 	s.Top--
-	fmt.Printf("stach pop %#v\n", val)
-	return val, nil
+	//fmt.Printf("stach pop %#v\n", val)
+	return val, true
 }
 
 func (s *Stack) List() {
@@ -113,7 +112,7 @@ func (s *Stack) Nice(opr int) int {
 	return res
 }
 
-func Exp(exp string) (res int)  {
+func Exp(exp string) (res int) {
 	numStack := &Stack{
 		Top: -1,
 	}
@@ -124,7 +123,7 @@ func Exp(exp string) (res int)  {
 	keepNum := ""
 	for {
 		ch := exp[index : index+1] // "3" 单个字符串, "+" ==> 43
-		fmt.Println(ch)
+		//fmt.Println(ch)
 		temp := int([]byte(ch)[0]) //字符串转为byte,  字符转的ASCII码
 		if oprStack.IsOpr(temp) {
 			// 如果operStack是空栈,直接入栈;
@@ -142,16 +141,19 @@ func Exp(exp string) (res int)  {
 				//大于当前准备入栈的运算符优先级,先pop出栈.直到栈为空.
 				//执行的最多次数为运算栈的Size+1次.
 				//fmt.Println(oprStack.Nice(oprStack.arr[oprStack.Top]), oprStack.Nice(temp))
-				for i:=0; i<= oprStack.Size();i++{
-					if oprStack.Nice(oprStack.arr[oprStack.Top]) >=
-						oprStack.Nice(temp) && !oprStack.IsEmpty() {
-						a, _ = numStack.Pop()
-						b, _ = numStack.Pop()
-						opr, _ = oprStack.Pop()
-						res = oprStack.Cal(a, b, opr)
-						//运算结果重新入数栈
-						numStack.Push(res)
+				for oprStack.Nice(oprStack.arr[oprStack.Top]) >=
+					oprStack.Nice(temp) {
+
+					a, _ = numStack.Pop()
+					b, _ = numStack.Pop()
+					opr, _ = oprStack.Pop()
+					res = oprStack.Cal(a, b, opr)
+					//运算结果重新入数栈
+					numStack.Push(res)
+					if oprStack.IsEmpty() {
+						break
 					}
+
 				}
 				oprStack.Push(temp)
 			}
@@ -235,11 +237,14 @@ func main() {
 //stack push  42
 //stack push  6
 //stack push  180
+//stack push  210
 //stack push  45
 //stack push  4
-//stack push  176
+//stack push  94
+//stack push  2
+//stack push  16
+//stack push  194
 //stack push  45
 //stack push  6
-//stack push  170
-//stack push  200
-//exp 30+30*6-4-6 = 200
+//stack push  188
+//exp 30+30*6-4^2-6 = 188

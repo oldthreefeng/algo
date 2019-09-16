@@ -55,6 +55,11 @@ func (l *LinkPolyNode) InsertLast(c, e int) {
 		date.next = l.head
 		return
 	}
+	cur := l.head
+	for cur.next != nil {
+		cur = cur.next
+	}
+	cur.next = date
 }
 
 func (l *LinkPolyNode) PrintItems() {
