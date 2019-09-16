@@ -70,6 +70,7 @@ func (c *circleQueue) IsEmpty() bool {
 //取出环形队列有多少元素
 func (c *circleQueue) Size() int {
 	return (c.tail + maxSize - c.head) % maxSize
+
 }
 
 func main() {

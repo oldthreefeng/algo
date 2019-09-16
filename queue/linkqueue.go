@@ -66,5 +66,6 @@ func (q *queue) Get() (a []int) {
 	for cur.next != nil {
 		a = append(a,cur.date)
 		cur = cur.next
+
 	}
 }
