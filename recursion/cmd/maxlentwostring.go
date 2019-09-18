@@ -9,7 +9,7 @@ package main
 
 import (
 	"fmt"
-	"gogs.wangke.co/go/algo/recursion"
+	"gogs.wangke.co/go/algo/utils"
 )
 
 var (
@@ -33,7 +33,7 @@ func main() {
 			if sz1[i-1] == sz2[j-1] {
 				maxLen[i][j] = maxLen[i-1][j-1] + 1
 			} else {
-				maxLen[i][j] = recursion.Max(maxLen[i][j-1], maxLen[i-1][j])
+				maxLen[i][j] = utils.Max(maxLen[i][j-1], maxLen[i-1][j])
 			}
 		}
 	}

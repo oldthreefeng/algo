@@ -9,7 +9,7 @@ package main
 
 import (
 	"fmt"
-	"gogs.wangke.co/go/algo/recursion"
+	"gogs.wangke.co/go/algo/utils"
 )
 
 /*
@@ -60,7 +60,7 @@ func MaxSumRe(i, j int) int {
 	}
 	x := MaxSumRe(i+1, j)
 	y := MaxSumRe(i+1, j+1)
-	return recursion.Max(x, y) + D[i][j]
+	return utils.Max(x, y) + D[i][j]
 }
 
 //基于MaxSumRe优化,将计算的结果存入二维数组.
@@ -73,7 +73,7 @@ func MaxSumReC(i, j int) int {
 	} else {
 		x := MaxSumRe(i+1, j)
 		y := MaxSumRe(i+1, j+1)
-		maxSum[i][j] = D[i][j] + recursion.Max(x, y)
+		maxSum[i][j] = D[i][j] + utils.Max(x, y)
 	}
 	return maxSum[i][j]
 }
@@ -83,7 +83,7 @@ func MaxSumFor() {
 	//将最大路径数存入到D二维数组的最后一个
 	for i := n-1; i >= 0; i-- {
 		for j := 0; j <= i; j++ {
-			MaxSum[j] = recursion.Max(MaxSum[j], MaxSum[j+1]) + D[i][j]
+			MaxSum[j] = utils.Max(MaxSum[j], MaxSum[j+1]) + D[i][j]
 		}
 	}
 	fmt.Println(MaxSum[0])
