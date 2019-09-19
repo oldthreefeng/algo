@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"strconv"
 )
@@ -25,24 +24,24 @@ func (s *Stack) Size() int  {
 	return len(s.arr[:s.Top])
 }
 
-func (s *Stack) Push(val int) (err error) {
+func (s *Stack) Push(val int) bool {
 	if s.IsFull() {
-		return errors.New("Stack Full")
+		return false
 	}
 	s.Top++
 	s.arr[s.Top] = val
 	fmt.Printf("stack push  %#v\n", val)
-	return
+	return true
 }
 
-func (s *Stack) Pop() (val int, err error) {
+func (s *Stack) Pop() (val int, bool bool) {
 	if s.IsEmpty() {
-		return 0, errors.New("Stack Empty")
+		return 0, false
 	}
 	val = s.arr[s.Top]
 	s.Top--
 	fmt.Printf("stach pop %#v\n", val)
-	return val, nil
+	return val, true
 }
 
 func (s *Stack) List() {
