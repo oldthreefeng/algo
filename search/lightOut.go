@@ -55,3 +55,13 @@ func OutputResult() {
 }
 
 //- [related](https://studygolang.com/articles/14276)
+
+func IsPowerOfTwo(n int) bool {
+	if n <=0 {
+		return false
+	}
+	//n为2的幂，二进制表示时：一定为 某位是1，其它位都是0，例如4：00000100
+	//n-1,二进制表示时，n的二进制为1的位右边全是1，例如3：00000011
+	//所以 & 运算后，结果是 00000000, 则必定为 true
+	return (n &(n-1)) == 0
+}

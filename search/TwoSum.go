@@ -31,5 +31,5 @@ func TwoSum(a []int, m int) []int {
 
 func TwoSunSort(a []int, m int) []int {
 	sort.Ints(a)
-
+	return nil
 }

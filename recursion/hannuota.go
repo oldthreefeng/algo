@@ -6,6 +6,13 @@ package recursion
 
 import "fmt"
 
+func Max(i, j int) int {
+	if i > j {
+		return i
+	}
+	return j
+}
+
 func Hanoi(n int, src, mid, dest string) {
 	if n == 1 {
 		fmt.Printf("%s -> %s\n", src, dest)
