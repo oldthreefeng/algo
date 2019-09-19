@@ -30,7 +30,7 @@ func (s *Stack) Push(val int) bool {
 	}
 	s.Top++
 	s.arr[s.Top] = val
-	fmt.Printf("stack push  %#v\n", val)
+	//fmt.Printf("stack push  %#v\n", val)
 	return true
 }
 
@@ -40,7 +40,7 @@ func (s *Stack) Pop() (val int, bool bool) {
 	}
 	val = s.arr[s.Top]
 	s.Top--
-	fmt.Printf("stach pop %#v\n", val)
+	//fmt.Printf("stach pop %#v\n", val)
 	return val, true
 }
 
@@ -123,7 +123,7 @@ func Exp(exp string) (res int)  {
 	keepNum := ""
 	for {
 		ch := exp[index : index+1] // "3" 单个字符串, "+" ==> 43
-		fmt.Println(ch)
+		//fmt.Println(ch)
 		temp := int([]byte(ch)[0]) //字符串转为byte,  字符转的ASCII码
 		if oprStack.IsOpr(temp) {
 			// 如果operStack是空栈,直接入栈;
@@ -141,15 +141,18 @@ func Exp(exp string) (res int)  {
 				//大于当前准备入栈的运算符优先级,先pop出栈.直到栈为空.
 				//执行的最多次数为运算栈的Size+1次.
 				//fmt.Println(oprStack.Nice(oprStack.arr[oprStack.Top]), oprStack.Nice(temp))
-				for i:=0; i<= oprStack.Size();i++{
-					if oprStack.Nice(oprStack.arr[oprStack.Top]) >=
-						oprStack.Nice(temp) && !oprStack.IsEmpty() {
-						a, _ = numStack.Pop()
-						b, _ = numStack.Pop()
-						opr, _ = oprStack.Pop()
-						res = oprStack.Cal(a, b, opr)
-						//运算结果重新入数栈
-						numStack.Push(res)
+				for oprStack.Nice(oprStack.arr[oprStack.Top]) >=
+					oprStack.Nice(temp) {
+					a, _ = numStack.Pop()
+					b, _ = numStack.Pop()
+					opr, _ = oprStack.Pop()
+					res = oprStack.Cal(a, b, opr)
+					//运算结果重新入数栈
+					numStack.Push(res)
+					// 弹出opr运算符之后,进行判空处理,为空就直接跳出循环
+					// 直接将待入栈的运算符压入符号栈.
+					if oprStack.IsEmpty() {
+						break
 					}
 				}
 				oprStack.Push(temp)

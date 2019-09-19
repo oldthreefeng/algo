@@ -85,8 +85,8 @@ func dfs(s int) { //从s开始向N行走
 			// 优化 3. 走到城市k所花费的路费为m的条件下,最优长度为minL[k][m],若在后续
 			//		  搜索中,再次走到k的时候,如果总路费恰好为m,且此时的长度L已经超过了
 			//		  minL[k][m],则不必走了
-			if  cost > K || totalLen+r.L >= minLen ||
-				totalLen+r.L >= minL[r.d][cost]{
+			if cost > K || totalLen+r.L >= minLen ||
+				totalLen+r.L >= minL[r.d][cost] {
 				continue
 			}
 			minL[r.d][totalCost+r.t] = totalLen + r.L
@@ -129,5 +129,3 @@ func main() {
 		fmt.Println("none road")
 	}
 }
-
-
