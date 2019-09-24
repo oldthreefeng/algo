@@ -45,7 +45,7 @@ func (queue *Queue) Enqueue(item interface{}) {
 
 // Extracts first item from the Queue
 func (queue *Queue) Dequeue() interface{} {
-	if queue.depth > 0 {
+	if !queue.IsEmpty() {
 		item := queue.current.item
 		queue.current = queue.current.prev
 		queue.depth--
@@ -67,4 +67,11 @@ func (queue *Queue) Peek() interface{}  {
 		return nil
 	}
 	return queue.current.item
+}
+
+func (queue *Queue) PeekBack() interface{} {
+	if queue.IsEmpty() {
+		return nil
+	}
+	return queue.last.item
 }
