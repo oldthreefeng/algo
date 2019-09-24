@@ -96,8 +96,8 @@ func Bfs(status int) bool {
 				continue
 			}
 			expanded[newStatus] = 1
-			qTail++
 			myQ[qTail] = Node{newStatus, qHead, moves[i]}
+			qTail++
 		}
 		qHead++
 	}
@@ -126,18 +126,19 @@ func main() {
 
 	sl, _ := strconv.Atoi(string(line[:9]))
 	if Bfs(sl) {
-		var moves = 0
+		var ms = 0
 		var pos = qHead
 		for {
-			moves++
-			result[moves] = myQ[pos].move
+			result[ms] = myQ[pos].move
+			ms++
 			pos = myQ[pos].father
-			if pos == 0 {
+			if pos == -1 {
 				break
 			}
 		}
-		for i := moves - 1; i >= 0; i-- {
-			fmt.Printf("%c",result[i])
+		fmt.Print("x")
+		for i := ms - 1; i >= 0; i-- {
+			fmt.Printf("%c->",result[i])
 		}
 	} else {
 		fmt.Println("unsolvable")
