@@ -111,13 +111,20 @@ func output() {
 	//}
 }
 
+func outWeight() {
+	for j := 0; j < 8; j++ {
+		fmt.Printf("%2d\n", weight[j])
+	}
+}
+
 // 当找不到下一个位置时,即NextDirection返回值为0,要进行回退
 // 为了回退方便,使用栈来存储, 能进时,当前的位置入栈, 向i走一步
 // 回退操作, 在棋牌的cur点置0,Step--; 出栈一个点,设置为当前的cur
 // 回退操作, 不能重复探测,去重操作.
 func main() {
 	InitWeight()
-	cur.x, cur.y = 2, 4
+	outWeight()
+	fmt.Scanln(&cur.x,&cur.y)
 	backup := 0
 	Step := 1
 	SetWeight(cur.x, cur.y)
