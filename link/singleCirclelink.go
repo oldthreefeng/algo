@@ -2,13 +2,13 @@ package main
 
 import "fmt"
 
-type CatNode struct {
+type Node struct {
 	no   int
 	name string
-	next *CatNode
+	next *Node
 }
 
-func InsertNode(head *CatNode, newNode *CatNode) {
+func InsertNode(head *Node, newNode *Node) {
 
 	// 如果只有一个元素,构成单元数链表
 	if head.next == nil {
@@ -31,8 +31,8 @@ func InsertNode(head *CatNode, newNode *CatNode) {
 	return
 }
 
-// 必须要返回一个*CatNode,因为如果删除头结点,那么链表就丢失了
-func DelCatNode(head *CatNode, id int) *CatNode {
+// 必须要返回一个*Node,因为如果删除头结点,那么链表就丢失了
+func DelNode(head *Node, id int) *Node {
 	temp := head
 	tail := head
 	for { //取得最后的指针
@@ -78,7 +78,7 @@ func DelCatNode(head *CatNode, id int) *CatNode {
 	return head
 }
 
-func ListSingleCircleLink(head *CatNode) {
+func ListSingleCircleLink(head *Node) {
 	temp := head
 	if temp.next == nil {
 		fmt.Println("empty singleCircleLink")
@@ -94,16 +94,16 @@ func ListSingleCircleLink(head *CatNode) {
 }
 
 func main() {
-	head := &CatNode{}
-	cat1 := &CatNode{
+	head := &Node{}
+	cat1 := &Node{
 		no:   1,
 		name: "tom",
 	}
-	cat2 := &CatNode{
+	cat2 := &Node{
 		no:   2,
 		name: "jerry",
 	}
-	cat3 := &CatNode{
+	cat3 := &Node{
 		no:   3,
 		name: "mike",
 	}
@@ -112,7 +112,7 @@ func main() {
 	InsertNode(head, cat3)
 	ListSingleCircleLink(head)
 
-	head = DelCatNode(head, 1)
+	head = DelNode(head, 1)
 	ListSingleCircleLink(head)
 
 }
