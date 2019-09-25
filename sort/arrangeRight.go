@@ -27,9 +27,9 @@ func ArrangeRight(arr []int,s,e,k int)  {
 	if s >= e {
 		return
 	}
-	if k == e-s+1 {
-		return
-	}
+	//if k == e-s+1 { //如果k=e-s+1,说明是求数组的排序,n logN
+	//	return
+	//}
 	key := arr[s]
 	i, j := s, e
 	//前a[s]大的全部排到右边
@@ -44,13 +44,12 @@ func ArrangeRight(arr []int,s,e,k int)  {
 		arr[i], arr[j] = arr[j], arr[i]
 	}
 	// 如果当前的t[s]的位置等于k.前k大的已经排序完毕
-	a := e - i + 1
-	if k == a {
+	if k == e - i + 1 {
 		return
 	//a > k 对右边a-1个元素再进行arrangeRight(k)
-	}else if k < a {
+	}else if k < e - i + 1 {
 		ArrangeRight(arr, i+1, e, k)
 	}else {
-		ArrangeRight(arr, s, i-1, k-a)
+		ArrangeRight(arr, s, i-1, k-(e - i + 1))
 	}
 }
