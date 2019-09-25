@@ -9,12 +9,14 @@ package lintcode
 
 import "gogs.wangke.co/go/algo/sort"
 
-// O(n+mlogm) 超时
+// O(n+mlogm) 超时,但是不稳定,最差的是O(n^2)
 func KthLargestElement(n int, nums []int) int {
 	sort.ArrangeRight(nums, 0, len(nums)-1, n)
 	return nums[len(nums)-n]
 }
 
+//O(nlogn) 稳定
 func KetLargestElementX(n int, nums []int) int {
-	return 0
+	sort.MergeSort(nums,0,len(nums)-1)
+	return nums[len(nums)-n]
 }
