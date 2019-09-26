@@ -14,29 +14,38 @@ import (
 )
 
 const (
+	//Prepare 准备发送的消息
 	Prepare = iota + 1
+	//Propose 待批准的消息-提案消息,并保证小于n的提案不在接收
 	Propose
+	//Promise accept返回的消息
 	Promise
+	//Accept 已经接收的提案
 	Accept
 )
 
+//promise 接口只能获取消息的提案号
 type promise interface {
 	number() int
 }
 
 type accept interface {
+	//accept接口获取提案的值
 	proposalValue() string
+	//accept接口获取提案的号
 	proposalNumber() int
 }
 
+//mes 消息体
 type mes struct {
-	from, to int
-	typ      int
-	n        int
-	pren     int
-	value    string
+	from, to int    //消息发送\接收
+	typ      int    //消息类型
+	n        int    //提案号
+	pren     int    //前一个提案号
+	value    string //提案值value
 }
 
+//proposalValue 只有是accept和promise类型的消息,才具备提案value值
 func (m mes) proposalValue() string {
 	//返回value需要什么条件呢？
 	switch m.typ {
@@ -63,16 +72,19 @@ func (m mes) number() int {
 	return m.n
 }
 
+//network to send and recv mes
 type network interface {
 	send(m mes)
 	recv(timeout time.Duration) (mes, bool)
 }
 
+// paxosNet paxos 的消息管道,recv[i]消息的接收i接收的信息
 type paxosNet struct {
 	recv map[int]chan mes
 }
 
-func NewPaxosNet(agents ...int) *paxosNet {
+// newPaxNet 生成paxosNet,根据agent的数量生成
+func newPaxNet(agents ...int) *paxosNet {
 	pn := &paxosNet{recv: make(map[int]chan mes, 0)}
 	for _, a := range agents {
 		pn.recv[a] = make(chan mes, 1024)
@@ -80,11 +92,13 @@ func NewPaxosNet(agents ...int) *paxosNet {
 	return pn
 }
 
+//send 发送消息mes至pn中的接收者i
 func (pn *paxosNet) send(m mes) {
 	log.Printf("nt send message :%+v", m)
 	pn.recv[m.to] <- m
 }
 
+//rec 从agent接收mes,并输出,返回信息mes和bool.
 func (pn *paxosNet) rec(from int, timeout time.Duration) (mes, bool) {
 	select {
 	case m := <-pn.recv[from]:
@@ -95,10 +109,12 @@ func (pn *paxosNet) rec(from int, timeout time.Duration) (mes, bool) {
 	}
 }
 
+//agentNet 根据agent的id生成AgentNet结构体
 func (pn *paxosNet) agentNet(id int) *agentNet {
 	return &agentNet{id: id, pn: pn}
 }
 
+//Empty 判断pn是不是空
 func (pn *paxosNet) empty() bool {
 	var n int
 	for i, q := range pn.recv {
@@ -108,6 +124,7 @@ func (pn *paxosNet) empty() bool {
 	return n == 0
 }
 
+//AgentNet 代理网络结构体,存放代理的id号和pn消息网络结构体
 type agentNet struct {
 	id int
 	pn *paxosNet
@@ -121,16 +138,18 @@ func (an *agentNet) recv(timeout time.Duration) (mes, bool) {
 	return an.pn.rec(an.id, timeout)
 }
 
+//proposer 提案提出者
 type proposer struct {
-	id        int
-	lastSeq   int
-	value     string
+	id        int    //提案号
+	lastSeq   int    //上一条Seq消息好
+	value     string //提案的value
 	valueN    int
-	acceptors map[int]promise
-	nt        network
+	acceptors map[int]promise //接受者的消息map
+	nt        network //paxos的网络
 }
 
-func NewPropose(id int, value string, nt network, acceptors ...int) *proposer {
+//newPropose 生成新的提案提出者proposer
+func newPropose(id int, value string, nt network, acceptors ...int) *proposer {
 	p := &proposer{
 		id:        id,
 		lastSeq:   0,
@@ -285,7 +304,7 @@ type acceptor struct {
 	nt       network
 }
 
-func NewAcceptor(id int, nt network, learners ...int) *acceptor {
+func newAcceptor(id int, nt network, learners ...int) *acceptor {
 	return &acceptor{
 		id:       id,
 		nt:       nt,
@@ -379,7 +398,7 @@ type learner struct {
 	value     chan string //测试数据比对,learner学习后得到的提案N对应的V[N,V]
 }
 
-func NewLearner(id int, nt network, acceptors ...int) *learner {
+func newLearner(id int, nt network, acceptors ...int) *learner {
 	l := &learner{id: id, nt: nt, acceptors: make(map[int]accept), value: make(chan string)}
 	for _, a := range acceptors {
 		l.acceptors[a] = mes{typ: Accept}
