@@ -8,10 +8,10 @@
 package lintcode
 
 import "testing"
+var n int64 = 20
 
 func TestTrailingZeros(t *testing.T) {
 	//超过20, 21!溢出了,超过int64
-	var n int64 = 20
 	want := TrailingZerosX(n)
 	rel  := TrailingZeros(n)
 	if want != rel {
@@ -21,7 +21,6 @@ func TestTrailingZeros(t *testing.T) {
 }
 
 func BenchmarkTrailingZeros(b *testing.B) {
-	var n int64 = 20
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		TrailingZeros(n)
@@ -29,7 +28,6 @@ func BenchmarkTrailingZeros(b *testing.B) {
 }
 
 func BenchmarkTrailingZerosX(b *testing.B) {
-	var n int64 = 20
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		TrailingZerosX(n)
