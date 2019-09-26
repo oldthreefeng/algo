@@ -4,11 +4,11 @@ package search
 func BinarySearch(arr []int, size, p int) int {
 	L := 0
 	R := size - 1
-	for L < R {
+	for L <= R {
 		mid := L + (R-L)/2
-		if p == mid {
+		if p == arr[mid] {
 			return mid
-		} else if p > mid {
+		} else if p > arr[mid] {
 			L = mid + 1
 		} else {
 			R = mid - 1
