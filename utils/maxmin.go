@@ -23,6 +23,17 @@ func Max(a, b int) int {
 	}
 }
 
+func Power(a,b int) int  {
+	res := 1
+	if b == 0 {
+		return res
+	}
+	for b > 0 {
+		b--
+		res *=a
+	}
+	return res
+}
 
 func BigMulti(a, b string) string {
 	if a == "0" || b == "0" {
