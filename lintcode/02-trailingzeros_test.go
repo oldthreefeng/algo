@@ -12,12 +12,24 @@ var n int64 = 20
 
 func TestTrailingZeros(t *testing.T) {
 	//超过20, 21!溢出了,超过int64
-	want := TrailingZerosX(n)
-	rel  := TrailingZeros(n)
-	if want != rel {
-		t.Fatalf("want=%d, real=%d", want,rel)
+	testClass := []struct{
+		n int64
+		t int64
+	} {
+		{11,2},
+		{15,3},
+		{19,3},
+		{20,4},
+		{25,6},
 	}
-	t.Logf("want=%d", want)
+	for _,tc :=range  testClass {
+		want := TrailingZerosX(tc.n)
+		rel := tc.t
+		if want != rel {
+			t.Fatalf("want=%d, real=%d", want,rel)
+		}
+		t.Logf("want=%d", want)
+	}
 }
 
 func BenchmarkTrailingZeros(b *testing.B) {

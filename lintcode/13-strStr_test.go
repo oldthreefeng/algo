@@ -8,6 +8,7 @@
 package lintcode
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -21,3 +22,26 @@ func TestStrStr(t *testing.T) {
 	}
 	t.Logf("want=%d", want)
 }
+
+func BenchmarkStrStr(b *testing.B) {
+	source := "abcdabcdefg"
+	target := "bcd"
+	b.ResetTimer()
+	for i:=0;i<b.N;i++ {
+		StrStr(source,target)
+	}
+}
+
+func BenchmarkStrStr2(b *testing.B) {
+	source := "abcdabcdefg"
+	target := "bcd"
+	b.ResetTimer()
+	for i:=0;i<b.N;i++ {
+		strings.Index(source,target)
+	}
+}
+
+/*
+BenchmarkStrStr-4    	84754094	        14.6 ns/op
+BenchmarkStrStr2-4   	139050566	         8.72 ns/op
+*/

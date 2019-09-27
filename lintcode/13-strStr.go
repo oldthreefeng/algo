@@ -23,3 +23,23 @@ func StrStr(source, target string) int {
 	}
 	return -1
 }
+
+func StrReplaceCh(str string, ch1, ch2 int32) string {
+	tmp := []rune(str)
+	for k, v := range tmp {
+		if v == ch1 {
+			tmp[k] = ch2
+		}
+	}
+	return string(tmp)
+}
+
+func StrDeleteCh(str string, ch int32) string {
+	tmp := []rune(str)
+	for k, v := range tmp {
+		if v == ch {
+			tmp = append(tmp[:k], tmp[k+1:]...)
+		}
+	}
+	return string(tmp)
+}
