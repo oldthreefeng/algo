@@ -7,7 +7,7 @@ Copyright 2019 louis.
 
 */
 
-package main
+package mataqipan
 
 import (
 	"fmt"
@@ -154,6 +154,36 @@ func Solution(x,y int) int {
 	return backup
 }
 
-func main() {
-	fmt.Println(Solution(5,5))
-}
+//func main() {
+//
+//	InitWeight()
+//	outWeight()
+//	fmt.Scanln(&cur.x,&cur.y)
+//	backup := 0
+//	Step := 1
+//	SetWeight(cur.x, cur.y)
+//	chess[cur.x][cur.y] = Step
+//	for Step < 64 {
+//		k := NextDirection(cur)
+//		if k != 0 {
+//			next.x = cur.x + direction[0][k]
+//			next.y = cur.y + direction[1][k]
+//
+//			cur.d[k] = 1
+//			s.Push(cur)
+//			cur = next
+//			Step++
+//			chess[cur.x][cur.y] = Step
+//			SetWeight(cur.x, cur.y)
+//			//回退
+//		} else {
+//			chess[cur.x][cur.y] = 0
+//			backup++
+//			Step--
+//			UnsetWeight(cur.x, cur.y)
+//			cur = s.Pop().(Spot)
+//		}
+//	}
+//	output()
+//	fmt.Print(backup)
+//}
