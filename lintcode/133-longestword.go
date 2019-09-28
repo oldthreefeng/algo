@@ -10,13 +10,8 @@ Copyright 2019 louis.
 /*
 ### **Description**
 
-中文English
 
 给一个词典，找出其中所有最长的单词。
-
-Have you met this question in a real interview?  Yes
-
-Problem Correction
 
 ### **Example**
 

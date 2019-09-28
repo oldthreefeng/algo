@@ -22,7 +22,7 @@ func TestPermute(t *testing.T) {
 		{2,3,1},
 		{3,1,2},
 	}
-	rel := Permute(&a)
+	rel := Permute(a)
 	fmt.Println(want)
 	fmt.Println(rel)
 }
