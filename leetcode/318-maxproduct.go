@@ -9,6 +9,14 @@ Copyright 2019 louis.
 
 package leetcode
 
+/*
+思路:
+用二进制的一位表示某一个字母是否出现过，0表示没出现，1表示出现。
+"abcd"二进制表示00000000 00000000 00000000 00001111,
+"bc"二进制表示00000000 00000000 00000000 00000110。
+当两个字符串没有相同的字母时，二进制数与的结果为0。
+*/
+
 func String2int(str string) (res int) {
 	for i := 0; i < len(str); i++ {  //不能用for-range迭代.
 		res |= 1 << uint(str[i]-'a')   // "abc" ==> 二进制"111"
