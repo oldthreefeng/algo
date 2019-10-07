@@ -22,7 +22,7 @@ func TestAtoi(t *testing.T) {
 	}{
 		{"test01",args{"+1"},1},
 		{"test02",args{"10"},10},
-		{"test03",args{"     010"},10},
+		{"test03",args{"     00000000000012345678"},12345678},
 		{"test04",args{" +123k "},123},
 		{"test05",args{"1.0"},1},
 		{"test06",args{" 15+4"},15},

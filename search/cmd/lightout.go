@@ -10,6 +10,7 @@ package main
 import (
 	"fmt"
 	"github.com/imroc/biu"
+	"gogs.wangke.co/go/algo/leetcode"
 	"gogs.wangke.co/go/algo/search"
 )
 
@@ -31,7 +32,7 @@ func main() {
 	fmt.Printf("%d的第2位,置为0后的二进制为:%v\n", a, biu.ToBinaryString(b))
 
 	for i := 0; i < 20; i++ {
-		if search.IsPowerOfTwo(i) {
+		if leetcode.IsPowerOfTwo(i) {
 			fmt.Printf("%d \tisPowerOfTwo\n", i)
 		}
 	}

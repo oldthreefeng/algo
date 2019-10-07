@@ -9,8 +9,6 @@ Copyright 2019 louis.
 
 package lintcode
 
-import "gogs.wangke.co/go/algo/stack"
-
 /*
 1）如果遇到操作数，我们就直接将其输出。
 
@@ -26,54 +24,55 @@ import "gogs.wangke.co/go/algo/stack"
 
 5）如果我们读到了输入的末尾，则将栈中所有元素依次弹出。
 */
+//
+//func EvaluateExpress(s []string) int {
+//	if s == nil || len(s) == 0 {
+//		return 0
+//	}
+//	s = EvalRPN(s)
+//	var st  stack.Stack
+//	//no more '(' ')'.
+//	for _,v := range  s {
+//		if IsOpr(v) {
+//			t1 := st.Pop().(int)
+//			t2 := st.Pop().(int)
+//			switch v[0] {
+//			/* ASCII '42 * 43 + 45 - 47 /' */
+//			case 43:
+//				st.Push(t2+t1)
+//			case 47:
+//				st.Push(t2-t1)
+//			case 42:
+//				st.Push(t2*t1)
+//			case 45:
+//				st.Push(t2/t1)
+//			}
+//		} else {
+//			st.Push(Atoi(v))
+//		}
+//	}
+//	return st.Pop().(int)
+//}
 
-func EvaluateExpress(s []string) int {
-	if s == nil || len(s) == 0 {
-		return 0
-	}
-	s = EvalRPN(s)
-	var st  stack.Stack
-	//no more '(' ')'.
-	for _,v := range  s {
-		if IsOpr(v) {
-			t1 := st.Pop().(int)
-			t2 := st.Pop().(int)
-			switch v[0] {
-			/* ASCII '42 * 43 + 45 - 47 /' */
-			case 43:
-				st.Push(t2+t1)
-			case 47:
-				st.Push(t2-t1)
-			case 42:
-				st.Push(t2*t1)
-			case 45:
-				st.Push(t2/t1)
-			}
-		} else {
-			st.Push(Atoi(v))
-		}
-	}
-	return st.Pop().(int)
-}
-
-func EvalRPN(s []string) []string  {
-	var str []string
-	var sa stack.Stack
-	if s == nil || len(s) == 0 {
-		return s
-	}
-	for k,v := range s {
-		if v[0] >= '0' && v[0]<='9' {
-			//数字直接进.
-			str = append(str, v)
-			continue
-		}
-		switch v[0] {
-		case '(':
-
-		}
-	}
-}
+//func EvalRPN(s []string) []string  {
+//	var str []string
+//	var sa stack.Stack
+//	if s == nil || len(s) == 0 {
+//		return s
+//	}
+//	for k,v := range s {
+//		if v[0] >= '0' && v[0]<='9' {
+//			//数字直接进.
+//			str = append(str, v)
+//			continue
+//		}
+//		switch v[0] {
+//		case '(':
+//
+//		}
+//	}
+//	return nil
+//}
 
 func IsOpr(s string) bool {
 	var val byte

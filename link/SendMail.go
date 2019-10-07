@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/Unknwon/com"
+	"github.com/unknwon/com"
 	"github.com/astaxie/beego"
 	"github.com/scorredoira/email"
 	"net/mail"

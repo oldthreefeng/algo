@@ -40,7 +40,7 @@ func Atoi(s string) int {
 		if v >= '0' && v<= '9' {
 			tmp = tmp*10 + int(v-'0')
 		}
-		if k > 11 {
+		if tmp > INT_MAX {
 			break
 		}
 	}
