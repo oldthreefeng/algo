@@ -7,30 +7,34 @@
 
 package utils
 
-func Min(a, b int) int {
-	if a > b {
-		return b
-	} else {
-		return a
+func Min(nums ...int) int {
+	m := nums[0]
+	for i := 1; i < len(nums); i++ {
+		if m > nums[i] {
+			m = nums[i]
+		}
 	}
+	return m
 }
 
-func Max(a, b int) int {
-	if a > b {
-		return a
-	} else {
-		return b
+func Max(nums ...int) int {
+	m := nums[0]
+	for i := 1; i < len(nums); i++ {
+		if m < nums[i] {
+			m = nums[i]
+		}
 	}
+	return m
 }
 
-func Power(a,b int) int  {
+func Power(a, b int) int {
 	res := 1
 	if b == 0 {
 		return res
 	}
 	for b > 0 {
 		b--
-		res *=a
+		res *= a
 	}
 	return res
 }

@@ -23,6 +23,8 @@ func TestMaxProduct(t *testing.T) {
 		want int
 	}{
 		{"test01", args{[]string{"a", "ab", "abc", "d", "cd", "bcd", "abcd"}}, 4},
+		{"test02", args{[]string{"abcw","baz","foo","bar","xtfn","abcdef"}}, 16},
+		{"test03", args{[]string{"a","aa","aaa","aaaa"}}, 0},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -42,7 +44,9 @@ func TestString2int(t *testing.T) {
 		args    args
 		wantRes int
 	}{
-		{"test01",args{"abc"},0x07},
+		{"test01",args{"abcd"},0x0f},
+		{"test02",args{"bc"},0x06},
+		{"test03",args{"abcdefghijklmnopqrstuvwxyz"},0x3ffffff},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

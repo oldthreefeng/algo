@@ -21,6 +21,8 @@ func TestFindComplement(t *testing.T) {
 		want int
 	}{
 		{"test01",args{5},2},
+		{"test02",args{1},0},
+		{"test03",args{12},3},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
