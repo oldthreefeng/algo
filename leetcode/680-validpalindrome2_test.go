@@ -29,3 +29,26 @@ func TestValidPalindrome(t *testing.T) {
 		})
 	}
 }
+
+func BenchmarkValidPalindrome(b *testing.B) {
+	s := "abca"
+	b.ResetTimer()
+	for i:=0;i<b.N ;i++  {
+		ValidPalindrome(s)
+	}
+}
+
+func BenchmarkValidPalindromeX(b *testing.B) {
+	s := "abca"
+	b.ResetTimer()
+	for i:=0;i<b.N ;i++  {
+		ValidPalindromeX(s)
+	}
+}
+
+/*
+BenchmarkValidPalindrome-4      130861261                8.75 ns/op            0 B/op          0 allo
+cs/op
+BenchmarkValidPalindromeX-4     104123209               11.5 ns/op             0 B/op          0 allo
+cs/op
+*/

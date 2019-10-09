@@ -38,3 +38,22 @@ func palindrome(s string) bool {
 		return false
 	}
 }
+
+
+func ValidPalindromeX(s string) bool {
+	var helper func(s string, left, right, delete int) bool
+	helper = func(s string, left, right, delete int) bool {
+		for left < right {
+			if s[left] == s[right] {
+				left++
+				right--
+			} else if delete > 0 {
+				return false
+			} else {
+				return helper(s, left+1, right, delete+1) || helper(s, left, right-1, delete+1)
+			}
+		}
+		return true
+	}
+	return helper(s, 0, len(s)-1, 0)
+}

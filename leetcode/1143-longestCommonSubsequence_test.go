@@ -7,7 +7,9 @@
 
 package leetcode
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestLongestCommonSubsequence(t *testing.T) {
 	type args struct {
@@ -19,13 +21,34 @@ func TestLongestCommonSubsequence(t *testing.T) {
 		args args
 		want int
 	}{
-		{"test01",args{"abcde","ace"},3},
-		{"test02",args{"abc","def"},0},
+		{"test01", args{"abcde", "ace"}, 3},
+		{"test02", args{"abc", "def"}, 0},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := Lcs(tt.args.text1, tt.args.text2); got != tt.want {
 				t.Errorf("Lcs() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestStrLcs(t *testing.T) {
+	type args struct {
+		text1 string
+		text2 string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{"test01", args{"abbde", "bbf"}, "bb"},
+	}
+	for _, tt := range tests {
+			t.Run(tt.name, func(t *testing.T) {
+			if got := StrLcs(tt.args.text1, tt.args.text2); got != tt.want {
+				t.Errorf("StrLcs() = %v, want %v", got, tt.want)
 			}
 		})
 	}

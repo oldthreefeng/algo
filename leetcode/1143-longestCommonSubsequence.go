@@ -69,3 +69,38 @@ func Lcs(text1 string, text2 string) int {
 	}
 	return dp[l1][l2]
 }
+
+func StrLcs(text1 string, text2 string) string {
+	l1 := len(text1)
+	l2 := len(text2)
+	dp := make([][]int, l1+1)
+	for i := 0; i <= l1; i++ {
+		dp[i] = make([]int, l2+1)
+	}
+	for i := 1; i <= l1; i++ {
+		for j := 1; j <= l2; j++ {
+			if text1[i-1] == text2[j-1] {
+				dp[i][j] = dp[i-1][j-1] + 1
+			} else {
+				dp[i][j] = utils.Max(dp[i][j-1], dp[i-1][j])
+			}
+		}
+	}
+
+	var z int
+	// s的长度必须是Lcs的长度
+	var s []byte = make([]byte,dp[l1][l2], l1)
+	for l1 != 0 && l2 != 0 {
+		if text1[l1-1] == text2[l2-1] {
+			l1--
+			l2--
+			s[z] = text1[l1]
+			z++
+		} else if dp[l1-1][l2] < dp[l1][l2-1] {
+			l2--
+		} else if dp[l1][l2-1] <= dp[l1-1][l2] {
+			l1--
+		}
+	}
+	return string(s)
+}
