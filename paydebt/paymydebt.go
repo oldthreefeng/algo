@@ -102,8 +102,8 @@ func benX() {
 
 func main() {
 	benJ()
-	fmt.Printf("\n等额本息:")
-	benX()
+	//fmt.Printf("\n等额本息:")
+	//benX()
 }
 /*
 20180911132802-cd97c894b2cc5*/

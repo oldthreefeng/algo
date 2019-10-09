@@ -18,7 +18,7 @@ type Stack struct {
 	depth uint64
 }
 
-// Initialzes new Stack
+// New Initializes new Stack
 func New() *Stack {
 	var stack = new(Stack)
 
@@ -26,13 +26,13 @@ func New() *Stack {
 	return stack
 }
 
-// Pushes a given item into Stack
+// Push a given item into Stack
 func (stack *Stack) Push(item interface{}) {
 	stack.sp = &Item{item: item, next: stack.sp}
 	stack.depth++
 }
 
-// Deletes top of a stack and return it
+// Pop Deletes top of a stack and return it
 func (stack *Stack) Pop() interface{} {
 	if stack.depth > 0 {
 		item := stack.sp.item
@@ -53,6 +53,7 @@ func (stack *Stack) Peek() interface{} {
 	return nil
 }
 
+// IsEmpty return true of a stack depth == 0
 func (stack *Stack) IsEmpty() bool  {
 	return stack.depth == 0
 }
