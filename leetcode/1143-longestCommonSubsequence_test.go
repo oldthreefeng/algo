@@ -24,8 +24,8 @@ func TestLongestCommonSubsequence(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := LongestCommonSubsequence(tt.args.text1, tt.args.text2); got != tt.want {
-				t.Errorf("LongestCommonSubsequence() = %v, want %v", got, tt.want)
+			if got := Lcs(tt.args.text1, tt.args.text2); got != tt.want {
+				t.Errorf("Lcs() = %v, want %v", got, tt.want)
 			}
 		})
 	}

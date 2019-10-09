@@ -10,7 +10,7 @@ package leetcode
 import "gogs.wangke.co/go/algo/utils"
 
 /*
-LongestCommonSubsequence 获取string的最长公共子序列
+Lcs 获取string的最长公共子序列
 
 - 思路
 
@@ -51,7 +51,7 @@ MaxLen(S1,S2)不会比MaxLen(S1,S2[:j-1])和MaxLen(S1[:i-1],S2)两者之中任�
 
 ```
 */
-func LongestCommonSubsequence(text1 string, text2 string) int {
+func Lcs(text1 string, text2 string) int {
 	l1 := len(text1)
 	l2 := len(text2)
 	dp := make([][]int, l1+1)
