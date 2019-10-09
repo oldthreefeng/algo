@@ -36,6 +36,10 @@ func bs(m *MountainArray, t, l, r int, asc bool) int {
 	return -1
 }
 
+// FindInMountainArray  在山脉数组中找某数.
+// 定义左右边界l和r，mid=(l+r)>>1，判断arr[mid]>arr[mid+1]是不是成立，如果成立，那么山峰在[0,mid]这个区间中，我们在这个区间中继续查找；
+// 如果不成立，那么山峰在[mid+1,len(arr))这个区间中，我们在这个区间中查找。
+// 最后山峰左边查找目标和山峰右边查找目标使用的就是二分查找，不过山峰左边是递增，山峰右边是递减.
 func FindInMountainArray(target int, m *MountainArray) int {
 	p, r := 0, m.length()-1
 	for p < r {

@@ -10,6 +10,8 @@ package leetcode
 import "gogs.wangke.co/go/algo/utils"
 
 /*
+LongestCommonSubsequence 获取string的最长公共子序列
+
 - 思路
 
 ```cgo
@@ -26,6 +28,7 @@ import "gogs.wangke.co/go/algo/utils"
     else
         MaxLen(i,j) = Max(MaxLen(i,j-1),MaxLen(i-1,j) )
 ```
+
 - 证明
 
 ```cgo
@@ -48,7 +51,6 @@ MaxLen(S1,S2)不会比MaxLen(S1,S2[:j-1])和MaxLen(S1[:i-1],S2)两者之中任�
 
 ```
 */
-
 func LongestCommonSubsequence(text1 string, text2 string) int {
 	l1 := len(text1)
 	l2 := len(text2)

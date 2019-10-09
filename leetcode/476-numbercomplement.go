@@ -10,9 +10,10 @@ Copyright 2019 louis.
 package leetcode
 
 /*
-将num的每一位进行异或,在进行组合
+FindComplement 生成某数的补数 `110(6) ==> 001(1)`
+从右边开始,对第i位的处理,num已经右移了i次,此时对num的个位数位进行异或;将生成的异或位也左移i位.
+然后将所有生成的异或位相加即可得到改数的`补数`.
 */
-
 func FindComplement(num int) int {
 	var c, tmp int
 	var i uint
