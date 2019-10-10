@@ -9,6 +9,7 @@ package leetcode
 
 import (
 	"reflect"
+	"sort"
 	"testing"
 )
 
@@ -37,11 +38,13 @@ func TestSingleNumber3(t *testing.T) {
 		args args
 		want []int
 	}{
-		{"test01",args{[]int{1,2,1,3,2,5}},[]int{5,3}},
+		{"test01",args{[]int{1,2,1,3,2,5}},[]int{3,5}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := SingleNumber3(tt.args.nums); !reflect.DeepEqual(got, tt.want) {
+			got := SingleNumber3(tt.args.nums)
+			sort.Ints(got)
+			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("SingleNumber3() = %v, want %v", got, tt.want)
 			}
 		})

@@ -4,55 +4,111 @@
  */
 package recursion
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
-const EPS = 1e-6
 
-func IsZero(x float64) bool {
-	return math.Abs(x) <= EPS
+func Count24(nums []int) bool {
+	arr := make([]float64, len(nums))
+	for i := range nums {
+		arr[i] = float64(nums[i])
+	}
+	return dfs(arr)
 }
 
-func Count24(a []float64, n int) bool {
-	if n == 1 {
-		if IsZero(a[0] - 24) {
-			return true
-		} else {
-			return false
+func dfs(nums []float64) bool {
+	if len(nums) == 1 {
+		return math.Abs(nums[0] - 24) < 0.001
+	}
+	for i := 0; i < len(nums); i++ {
+		for j := 0; j < len(nums); j++ {
+			if i == j {
+				continue
+			}
+			next := []float64{}
+			for k := 0; k < len(nums); k++ {
+				if k != i && k != j {
+					next = append(next, nums[k])
+				}
+			}
+
+			l := len(next)
+			for _, k := range []byte{'+', '-', '*', '/'} {
+				var tmp float64
+				switch k {
+				case '+':
+					tmp = nums[i] + nums[j]
+				case '-':
+					tmp = nums[i] - nums[j]
+				case '*':
+					tmp = nums[i] * nums[j]
+				case '/':
+					tmp = nums[i] / nums[j]
+				}
+				next = append(next, tmp)
+				ok := dfs(next)
+				if ok {
+					return true
+				}
+				next = next[:l]
+			}
 		}
 	}
-	var b []float64
-	b = make([]float64, n)
-	for i := 0; i < n-1; i++ {
-		for j := i + 1; j < n; j++ { //枚举两个数的组合
-			var m int = 0
-			for k := 0; k < n; k++ {
-				if k != i && k != j { //将剩余m-2的数放入b
-					b = append(b, a[i])
-					m++
-				}
+	return false
+}
+
+
+
+func JudgePoint24(nums []int) bool {
+	arr := make([]float64, 4)
+	for i := 0; i < 4; i++ {
+		arr[i] = float64(nums[i])
+	}
+	return backtrace(arr)
+}
+
+func backtrace(nums []float64) bool {
+	zero := 0.0001
+	if len(nums) == 1 {
+		if math.Abs(nums[0]-float64(24)) < zero {
+			return true
+		}
+		return false
+	}
+
+	for i := 0; i < len(nums); i++ {
+		for j := 0; j < i; j++ {
+			p := nums[i]
+			q := nums[j]
+			add := []float64{p + q, p - q, q - p, p * q}
+			if math.Abs(p) > zero {
+				add = append(add, q/p)
 			}
-			if b[m] = a[i] + a[j]; Count24(b, m+1) {
-				return true
+			if math.Abs(q) > zero {
+				add = append(add, p/q)
 			}
-			if b[m] = a[i] - a[j]; Count24(b, m+1) {
-				return true
-			}
-			if b[m] = a[j] - a[i]; Count24(b, m+1) {
-				return true
-			}
-			if b[m] = a[i] * a[j]; Count24(b, m+1) {
-				return true
-			}
-			if IsZero(a[j]) {
-				if b[m] = a[i] / a[j]; Count24(b, m+1) {
+
+			nums = append(nums[:i], nums[i+1:]...) // 移除i元素
+			nums = append(nums[:j], nums[j+1:]...) // 移除j元素
+
+			for _, v := range add {
+				nums = append(nums, v)
+				fmt.Println(nums)
+				if backtrace(nums) {
 					return true
 				}
+				nums = nums[:len(nums)-1]
 			}
-			if IsZero(a[i]) {
-				if b[m] = a[j] / a[i]; Count24(b, m+1) {
-					return true
-				}
-			}
+
+			rear := append([]float64{}, nums[j:]...)
+			nums = append(nums[:j], q)
+			nums = append(nums, rear...)
+
+			rear = append([]float64{}, nums[i:]...)
+			nums = append(nums[:i], p)
+			nums = append(nums, rear...)
 		}
 	}
 	return false
