@@ -57,7 +57,7 @@ func DigitCounts (k int, n int) int {
 - 参考
 
 ASCII Table
-Dec  = Decimal Value
+Dec  = Decimal value
 Char = Character
 
 '5' has the int value 53
