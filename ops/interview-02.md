@@ -37,3 +37,61 @@ Zabbix监控系统相关问题
 Ansible系统相关问题
 
 ELK系统 elasticsreach使用
+
+### 20191016比格基地 ###
+
+磁盘io占满,如何排查是右什么进程占用的
+
+```cgo
+ iotop -oP
+ 命令的含义：只显示有I/O行为的进程
+ pidstat -d 1
+ 命令的含义：展示I/O统计，每秒更新一次
+```
+
+文件系统上生成一个文件到落盘的过程
+
+![](https://img-blog.csdn.net/20170819213317556?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvb1podVpoaVl1YW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+linux的文件系统nfs和ext的区别
+
+参考[知乎大佬](https://www.zhihu.com/question/24413471/answer/38883787)
+
+```cgo
+EXT文件系统：
+是固定的inode节点
+格式化慢
+修复慢
+文件系统存储量有限
+XFS文件系统：
+高容量，大存储
+inode与block都是在需要时产生的
+```
+
+nginx的并发优化
+```cgo
+$ cat nginx.conf 
+net.core.somaxconn = 20480
+net.core.rmem_default = 262144
+net.core.wmem_default = 262144
+net.core.rmem_max = 16777216
+net.core.wmem_max = 16777216
+net.ipv4.tcp_rmem = 4096 4096 16777216
+net.ipv4.tcp_wmem = 4096 4096 16777216
+net.ipv4.tcp_mem = 786432 2097152 3145728
+net.ipv4.tcp_max_syn_backlog = 16384
+net.core.netdev_max_backlog = 20000
+net.ipv4.tcp_fin_timeout = 15
+net.ipv4.tcp_max_syn_backlog = 16384
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_tw_recycle = 1
+net.ipv4.tcp_max_orphans = 131072
+net.ipv4.tcp_syncookies = 0
+$ sysctl -p
+
+nginx层面
+worker_connections 20000;
+worker_process 1;
+
+```
+
