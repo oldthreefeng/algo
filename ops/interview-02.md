@@ -14,10 +14,20 @@
 
 请问,你在公司运维一年多的时间内,碰到的最棘手的问题?(或者是最具有代表性的问题)
 
+```
+磁盘删除文件的问题, 删除大日志文件, 但是磁盘空间未释放问题
+
+mysql数据库批量更新, 开发同学的一个`update`语句
+
+公司单点系统转向负载均衡高可用的过程
+
+服务器权限隔离,审计等功能的实现
+```
+
 ```cgo
 
 ```
-5. 请问你了解iot管理么 (不知道,it的方法管理论)
+5. 请问你了解ittl管理么 (不知道,it的方法管理论)
 6. kubernetes的备份如何做? (基于命令行备份 ectdctl)
 7. 给你一个应用程序,需要部署, 已知并发峰值为100000.请问如何设计.
 
@@ -36,11 +46,55 @@ Zabbix监控系统相关问题: action和triggers的作用?
 
 Ansible系统相关问题: playbook的格式
 
-
 ELK系统 elasticsreach使用
 
 [这篇文章](https://blog.csdn.net/laoyang360/article/details/52244917)
+
 ### 20191016比格基地 ###
+
+docker容器对CPU,内存,磁盘io等资源的控制?
+
+[博客园大佬](https://www.cnblogs.com/sammyliu/p/5886833.html)
+写一个程序
+```c
+int main(void)
+{
+    int i = 0;
+    for(;;) i++;
+    return 0;
+}
+```
+
+
+```bash
+$ gcc -o hello a.c
+$ ./hello &
+$ top
+top - 23:04:03 up 92 days, 11:49,  4 users,  load average: 0.20, 0.94, 0.62
+
+  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND                                                                        
+13619 root      20   0    4208    352    276 R 99.9  0.0   2:13.70 hello                                                                          
+```
+对该资源的控制
+
+```bash
+# cgroup中对cpu的限制
+$ mkdir /sys/fs/cgroup/cpu/hello
+$ ls
+cgroup.clone_children  cgroup.procs  cpuacct.usage         cpu.cfs_period_us  cpu.rt_period_us   cpu.shares  notify_on_release
+cgroup.event_control   cpuacct.stat  cpuacct.usage_percpu  cpu.cfs_quota_us   cpu.rt_runtime_us  cpu.stat 
+$ cat cpu.cfs_quota_us
+-1
+$ echo 20000 > cpu.cfs_quota_us
+$ echo 13619 >> tasks
+
+$ top 
+top - 23:07:48 up 92 days, 11:53,  4 users,  load average: 0.00, 0.44, 0.48
+
+  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND                                                                        
+13619 root      20   0    4208    352    276 R 20.3  0.0   2:49.65 hello
+```
+docker控制cpu,内存,io,是基于这样的原理.
 
 磁盘io占满,如何排查是右什么进程占用的
 
@@ -192,7 +246,7 @@ Redis集群中内置了 16384 个哈希槽，当需要在 Redis 集群中放置�
 
 自研python自动化运维发布脚本,  
 
-监控系统promesthous
+监控系统`promesthous`
 
 ### 20191018 东方财富 ###
 
@@ -208,7 +262,7 @@ Redis集群中内置了 16384 个哈希槽，当需要在 Redis 集群中放置�
 
 ### 20191021凯移 ###
 
-iptables转发   
+`iptables`转发   
 将本机115.236.178.231的80转发至192.168.1.118:443端口, 用到的是DNAT技术
 和SNAT技术.
 
@@ -227,3 +281,35 @@ $ cd /usr/src/ rename -v  '.log' '.txt' *.log
 `aaa.log' -> `aaa.txt'
 `bbb.log' -> `bbb.txt'
 ```
+
+### 20191022 韵达快递 ###
+
+公司内部的自动化发布是怎么做的? 对CICD的理解有多深?
+
+对于kubernetes容器编排和docker容器的理解?
+
+docker里面的add和copy的区别?
+
+```dockerfile
+## COPY指令可以将构建命令所在的主机本地文件和目录,复制到镜像系统
+## exec格式
+COPY ["",""]
+## shell格式
+COPY src... dst
+
+## ADD指令
+## 可以认为是COPY的增强版, 支持将远程的URL资源加入到镜像的文件系统
+## 如需要读取远程URL资源, 建议使用RUN 指令中的wget或者curl
+ADD ["",""]
+ADD src... dst
+
+```
+
+注意事项
+- 源路径是相对于执行build的相对路径
+- 如果目标路径不存在, 则会创建相应的完整路径
+- 如果目标路基不是一个文件,则必须使用'/'结尾
+- 路径中可以使用"*"等通配符
+ 
+jenkinsCI主要是进行镜像打包, 利用ansible来进行生产系统的发布(生成的镜像部署在k8s中).
+
