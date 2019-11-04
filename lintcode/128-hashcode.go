@@ -59,13 +59,13 @@ Problem Correction
 
 */
 
-func HashCode(key string, HASH_SIZE int) int {
+func HashCode(key string, HashSize int) int {
 	res := 0
-	if len(key) == 0 || HASH_SIZE == 0{
+	if len(key) == 0 || HashSize == 0{
 		return 0
 	}
 	for _,v := range key {
-		res = res*33%HASH_SIZE + int(v)
+		res = res*33%HashSize + int(v)
 	}
-	return res%HASH_SIZE
+	return res% HashSize
 }

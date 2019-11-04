@@ -20,6 +20,14 @@ func PreOrder(h *Hero) {
 
 }
 
+func PostOrder(h *Hero)  {
+	if h != nil {
+		PostOrder(h.Left)
+		PostOrder(h.Right)
+		fmt.Printf("no = %d name = %s \n", h.No, h.Name)
+	}
+}
+
 func main() {
 	root := &Hero{
 		No:   1,
@@ -41,5 +49,19 @@ func main() {
 		Name: "林冲",
 	}
 	right1.Right = right2
+	left2 := &Hero{
+		Name:"case",
+		No: 5,
+	}
+	left1.Left = left2
 	PreOrder(root)
+	PostOrder(root)
 }
+
+//    1
+//  2   3
+//5       4
+
+// preOrder   1 2 5 3 4
+// PostOrder  5 2 4 3 1
+// IndexOrder 5 2 1 3 4
