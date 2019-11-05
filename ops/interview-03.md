@@ -63,3 +63,56 @@ nexus管理
 
 java技术栈,有架构师, 运维, DBA
 部分产品已经上k8s.
+
+### 平安普惠20191105 ###
+
+和初面差不多，
+问题一: 最近一份公司干的内容.
+我这边从三个方面来讲述：
+1. 搭建jumpserver堡垒跳板机， 实现权限分离， 安全， 审计功能， 多云环境资产管控。
+2. 搭建owncloud客户管理资料共享云盘， 解决数据公布及共享问题。 类似百度云盘
+3. 搭建k8s和docker集群测试环境。
+
+问题二： java的容器使用的是什么？ java的一些jvm参数了解么， 可以详细说一下你对jvm的了解， 以及对gc的理解么？这里也深入的问了一下java相关的， 我没有答出来
+
+```
+回答是使用jetty，  
+-Xmx1G  最大堆大小为：1G
+-Xms1G  初始堆大小： 1G
+-Xss512m  每个线程堆栈大小： 512M
+-XX:MaxPerSize=16m 持久代大小： 16m
+-XX:+UseParallelGC： 选择垃圾收集器为并行收集器
+```
+问题三: 对DB了解么？(mysql), 那说说mysql的高可用以及mysql的主从复制原理吧. 并追问了mysql的存储引擎
+
+
+master 起一个线程.
+
+当从节点连接主节点时，主节点会创建一个log dump 线程，用于发送bin-log的内容。在读取bin-log中的操作时，此线程会对主节点上的bin-log加锁，当读取完成，甚至在发动给从节点之前，锁会被释放。
+
+从节点 起两个线程
+1. I/O
+当从节点上执行`start slave`命令之后，从节点会创建一个I/O线程用来连接主节点，请求主库中更新的bin-log。I/O线程接收到主节点binlog dump 进程发来的更新之后，保存在本地relay-log中。
+
+2. SQL线程
+SQL线程负责读取`relay log`中的内容，解析成具体的操作并执行，最终保证主从数据的一致性。
+
+问题四. 对Zabbix监控或者openflacon或者promethoues等开源监控了解么? 讲一下吧
+
+```
+其实面试官可能想知道更深入的, 比如监控分组, 监控哪些内容, 具体如何监控.
+我这边主要用的是阿里云的云监控系统, 以前用过zabbix监控, 我就说一下zabbix的监控吧. 
+首先, 使用agent来进行采集, 采集方式有四种, agent/snmp/IPMI/jmx
+监控项主要是对应的应用分组
+触发器用来触发一系列的event事件: 界定某特定的item采集到的数据的非合理区间或非合理状态
+动作主要来操作恢复事项或者通知, 比如执行一段shell, 发生e-mail等.
+```
+
+问题五. 基于k8s和docker的测试环境, 看你用过k8s, 你讲一下k8s的一些资源概念吧. 追问了一下服务暴露的相关问题.
+
+```
+k8s的资源概念非常之多, 从最基础的组件 pod, service, deployment, daemonSet, configMap, endpoint, ingress等...
+
+现在大多数的k8s环境, 暴露方式都是 ingress+clusterIP, clusterIP主要是内部的服务直接相互通信使用, 当然也有公司采用LoadBalancer方式(比如阿里云集群或者uk8s集群), 当然比较好用的是ingress的方式.  ingress是整个流量的注入口, 后端有个 ingress controller来进行分发至 service服务, 再有service调度至pod, 完成整个访问. 
+```
+
