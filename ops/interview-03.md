@@ -76,12 +76,20 @@ java技术栈,有架构师, 运维, DBA
 问题二： java的容器使用的是什么？ java的一些jvm参数了解么， 可以详细说一下你对jvm的了解， 以及对gc的理解么？这里也深入的问了一下java相关的， 我没有答出来
 
 ```
-回答是使用jetty，  
--Xmx1G  最大堆大小为：1G
--Xms1G  初始堆大小： 1G
--Xss512m  每个线程堆栈大小： 512M
--XX:MaxPerSize=16m 持久代大小： 16m
--XX:+UseParallelGC： 选择垃圾收集器为并行收集器
+回答是使用jetty，   java的启动参数如下: 
+JAVA_OPTS="-Xms2048m -Xmx2048m -XX:PermSize=256M -XX:MaxPermSize=512m"
+
+参数说明：
+1.Xms：
+TOMCAT中JVM内存最小可用内存，此值可以设置与-Xmx相同，以避免每次垃圾回收完成后JVM重新分配内存。
+2.Xmx：
+TOMCAT中JVM内存最大可用内存；
+3.-XX:PermSize=256M
+设置永久域（非堆内存）的初始值，默认是物理内存的1/64, 建议不要超过256M；
+4.-XX:MaxPermSize=512M
+设置永久域的最大值，默认是物理内存的1/4，建议修改为512M；
+5.-XX:+UseParallelGC： 
+选择垃圾收集器为并行收集器
 ```
 问题三: 对DB了解么？(mysql), 那说说mysql的高可用以及mysql的主从复制原理吧. 并追问了mysql的存储引擎
 
