@@ -1,0 +1,21 @@
+---
+- hosts: yj-new
+  remote_user: root
+  tasks:
+  - name:  copy jdk to nodes
+    copy:
+      src: /opt/playbook/jdk-8u181-linux-x64.tar.gz
+      dest: /usr/local/jdk-8u181-linux-x64.tar.gz
+
+  - name:  systcl change
+    copy:
+      src: /opt/playbook/sysctl.conf
+      dest: /etc/sysctl.conf
+
+  - name: ulimits 
+    copy:  
+      src: /opt/playbook/ulimit.sh
+      dest: /etc/profile.d/ulimit.sh
+
+  - name: tar xf jdk
+    shell: "cd /usr/local && tar xf jdk-8u181-linux-x64.tar.gz -C /usr/local"

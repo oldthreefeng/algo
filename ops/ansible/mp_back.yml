@@ -1,0 +1,52 @@
+---
+- hosts: mp-back
+  remote_user: root
+  tasks:  
+  - name: Create a directory if it does not exist
+    file:
+      path: /usr/local/card
+      state: directory
+      mode: '0755'
+
+  - name: copy the startcard.j2 to nodes
+    template:
+        src: /opt/playbook/devops/script/startcard.t2
+        dest: /usr/local/card/startcard.sh
+        mode: "u=rwx,g=r,o=r"
+
+  - name: backup jar
+    shell: "cd /usr/local/card/ && bash admin.sh bak"
+
+  - name: copy api jar  to nodes
+    copy:
+      src: /opt/playbook/devops/weimall/card-web.jar
+      dest: /usr/local/card/card-web.jar
+
+  - name: get pid of weimall-api last time
+    shell: "ps -ef | grep -v grep | grep -w card-web | awk '{print $2}'"
+    register: running_processes
+
+# 发送停止运行信号
+  - name: Kill running processes
+    shell: "kill {{ item }}"
+    with_items: "{{ running_processes.stdout_lines }}"
+
+# 等待60s钟，确认获取的到的pid是否都停止运行
+  - wait_for:
+      path: "/proc/{{ item }}/status"
+      state: absent
+      timeout: 60
+    with_items: "{{ running_processes.stdout_lines }}"
+    ignore_errors: yes
+    register: killed_processes
+# 强制杀死，未停止运行的进程
+  - name: Force kill stuck processes
+    shell: "kill -9 {{ item }}"
+    with_items: "{{ killed_processes.results | select('failed') | map(attribute='item') | list }}"
+
+# 启动新的jar包
+  - name: start card-web  
+    shell: "cd /usr/local/card  && ./startcard.sh"
+  - name: health check
+    shell: "sleep 50 \
+     && curl -L -o /dev/null --connect-timeout 5 -s -w %{http_code} http://localhost:7000/card/nologin/version"

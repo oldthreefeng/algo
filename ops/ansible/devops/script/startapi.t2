@@ -1,0 +1,8 @@
+export JAVA_HOME=/usr/local/jdk1.8.0_181
+
+export JRE_HOME=/usr/local/jdk1.8.0_181/jre
+cd /usr/local/e-mall/api
+nohup /usr/local/jdk1.8.0_181/bin/java -jar weimall-api-single-{{version}}.jar  --spring.profiles.active=prod   -server  -XX:MetaspaceSize=512m -XX:MaxMetaspaceSize=512m -Xms2048m -Xmx4096m -Xmn256m -Xss256k -XX:SurvivorRatio=7 -XX:+UseConcMarkSweepGC -XX:+UseFastAccessorMethods  > /dev/null 2>&1   &
+
+#
+

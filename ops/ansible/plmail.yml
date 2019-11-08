@@ -1,0 +1,11 @@
+---
+- hosts: yj-font
+  remote_user: root
+  tasks:
+  - name: copy .zip to nodes
+    copy:
+      src: /opt/playbook/devops/weimall/plmall_{{version}}.zip
+      dest: /var/www/penglai_admin/plmall_{{version}}.zip
+
+  - name: unzip .zip file
+    shell: "cd /var/www/penglai_admin/ && unzip -o -q plmall_{{version}}.zip" 
