@@ -1,4 +1,6 @@
 ---
+# MAINTAINER louis.hong@junhsue.com
+# 雅集 plmall.youpenglai.com前端部署
 - hosts: yj-font
   remote_user: root
   tasks:

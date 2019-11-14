@@ -1,0 +1,18 @@
+---
+# MAINTAINER louis.hong@junhsue.com
+# 雅集admall.youpenglai.com 前端部署
+- hosts: yj-font
+  remote_user: root
+  tasks:
+  - name: create admin if not exist
+    file:
+      path: /var/www/wechat_admin/
+      state: directory
+      mode: '0755'
+  - name: copy admall.zip to nodes
+    copy:
+      src: /opt/playbook/devops/weimall/admall_{{version}}.zip
+      dest: /var/www/wechat_admin/admall_{{version}}.zip
+
+  - name: unzip .zip file
+    shell: "cd /var/www/wechat_admin/ && unzip -o -q admall_{{version}}.zip"

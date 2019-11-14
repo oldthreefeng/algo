@@ -1,4 +1,6 @@
 ---
+# MAINTAINER louis.hong@junhsue.com
+# card.youpenglai.com 有朋名片后端
 - hosts: mp-back
   remote_user: root
   tasks:  
@@ -8,10 +10,10 @@
       state: directory
       mode: '0755'
 
-  - name: copy the startcard.j2 to nodes
+  - name: copy the startmp.t2 to nodes
     template:
-        src: /opt/playbook/devops/script/startcard.t2
-        dest: /usr/local/card/startcard.sh
+        src: /opt/playbook/devops/tpl/startmp.t2
+        dest: /usr/local/card/startmp.sh
         mode: "u=rwx,g=r,o=r"
 
   - name: backup jar

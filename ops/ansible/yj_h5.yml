@@ -1,0 +1,17 @@
+---
+# MAINTAINER louis.hong@junhsue.com
+# 雅集admall的h5  前端部署
+- hosts: yj-font
+  remote_user: root
+  tasks:
+    - name: create admin if not exist
+      file:
+        path: /var/www/wechat_admin/h5/
+        state: directory
+        mode: '0755'
+    - name: copy admall.zip to nodes
+      copy:
+        src: /opt/playbook/devops/weimall/h5_{{version}}.zip
+        dest: /var/www/wechat_admin/h5/h5_{{version}}.zip
+    - name: unzip .zip file
+      shell: "cd /var/www/wechat_admin/h5/ && unzip -o -q h5_{{version}}.zip"
