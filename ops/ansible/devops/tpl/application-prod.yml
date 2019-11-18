@@ -1,0 +1,149 @@
+domain_url: test.example
+mybatis-plus:
+  global-config:
+    field-strategy: 1
+server:
+  port: 8888
+spring:
+  data:
+    elasticsearch:
+      cluster-name: weimall
+      cluster-nodes: localhost:9300
+      repositories:
+        enable: true
+    mongodb:
+      uri: mongodb://root:password@localhsot:23717/admin
+  datasource:
+    # ======================================mysql======================================= #
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/weimall?characterEncoding=utf8
+    username: user
+    password: password
+    druid:
+      loginUsername: admin
+      loginPassword: penglai
+      initialSize: 10
+      minIdle: 6
+      maxActive: 50
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 合并多个DruidDataSource的监控数据
+      useGlobalDataSourceStat: true
+      filter:
+        stat:
+          enabled: true
+          db-type: mysql
+          log-slow-sql: true
+          slow-sql-millis: 2000
+        wall:
+          enabled: true
+          db-type: mysql
+  rabbitmq:
+    host: 172.16.111.123
+    listener:
+      acknowledge-mode: MANUAL
+      concurrency: 5
+      max-concurrency: 10
+    password: password
+    port: 5672
+    username: user
+    virtual-host: weimall
+  redis:
+    database: 7
+    host: localhsot
+    password: password
+    pool:
+      max-active: 50
+      max-idle: 20
+      max-wait: 5000
+      min-idle: 20
+    port: 6379
+    timeout: 5000
+
+#微信开放平台
+wechat:
+  open:
+    componentAppId: xxx
+    componentSecret: xxx
+    componentToken: xxx
+    componentAesKey: xxxxx
+    domain: http://test.example.com
+    #*********************************
+    #授权给开发者的权限集列表，ID为1到26分别代表：
+    # 1、消息管理权限 2、用户管理权限 3、帐号服务权限 4、网页服务权限 5、微信小店权限
+    # 6、微信多客服权限 7、群发与通知权限 8、微信卡券权限 9、微信扫一扫权限 10、微信连WIFI权限
+    # 11、素材管理权限 12、微信摇周边权限 13、微信门店权限 15、自定义菜单权限
+    # 16、获取认证状态及信息
+    # 17、帐号管理权限（小程序） 18、开发管理与数据分析权限（小程序） 19、客服消息管理权限（小程序） 20、微信登录权限（小程序）
+    # 21、数据分析权限（小程序） 22、城市服务接口权限 23、广告管理权限 24、开放平台帐号管理权限 25、 开放平台帐号管理权限（小程序）
+    # 26、微信电子发票权限 41、搜索widget的权限 请注意： 1）该字段的返回不会考虑公众号是否具备该权限集的权限（因为可能部分具备），请根据公众号的帐号类型和认证情况，来判断公众号的接口权限。
+    #*********************************
+    ma:
+      func_infos: 17,18,19
+      version: 1.0.0 #基础库最低版本设置
+    mp:
+      func_infos: 1,2
+  pay:
+    service:          #微信支付服务商
+      mchId: xxxxxxxxxx                               #微信服务商编号
+      payKey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx        #微信服务商密钥
+      APIv3Secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx   #微信服务商APIv3Secret
+      keyStoreUrl: /opt/weimall/uploadFile/*.p12    #微信服务商证书地址
+  micro:
+    notSupportCards: 623501;621468;620522;625191;622384;623078;940034;622150;622151;622181;622188;955100;621095;620062;621285;621798;621799;621797;622199;621096;62215049;62215050;62215051;62218849;62218850;62218851;621622;623219;621674;623218;621599;623698;623699;623686;621098;620529;622180;622182;622187;622189;621582;623676;623677;622812;622810;622811;628310;625919;625368;625367;518905;622835;625603;625605;518905  #小微商户开户目前不支持前缀的银行卡
+
+#百度云 文字识别  APPID/AK/SK 设置
+baiduCloud:
+  textRecognition:
+    appId: xxxxx
+    apiKey: xxxxxxxx
+    secretKey: xxxxxx
+
+#阿里云
+alibabaCLoud:
+  textRecognition:
+    appcode: xxxxxxx
+
+
+#讯飞云
+xunfei:
+  textRecognition:
+    businessLicense:
+      appId: xxxxx
+      apiKey: xxxxxx
+      url: http://webapi.xfyun.cn/v1/service/v1/ocr/business_license
+      engineType: business_license
+    idCard:
+      appId: xxxxx
+      apiKey: xxxxxx
+      url: http://webapi.xfyun.cn/v1/service/v1/ocr/idcard
+      engineType: idcard
+
+#腾讯云
+tencent:
+  textRecognition:
+    businessLicense:
+      url: https://recognition.image.myqcloud.com/ocr/bizlicense
+
+
+com:
+  penglai:
+    logistics: #快递鸟配置
+      merchantId: xxxx
+      apiKey: xxxxx
+      baffle: false
+    live:  # 直播相关配置
+      groupAccount: xxxxx
+      groupPasswd: xxxxx
+      livePayCallback: http://test.example.com/apis/v1/mall/live/order/success/callback
+      liveStreamCallback: http://test.example.com/apis/v1/mall/live/room/stream/callback
+      liveCustomerPayCallback: http://test.example.com/apis/v1/mall/live/order/customer/success/callback
+      receiptMerchant:
+        appId: xxxxxx
+        mchId: xxxxx
+
+#配置销售榜单商品
+sales:
+  product:
+    ids: xxxxxx
