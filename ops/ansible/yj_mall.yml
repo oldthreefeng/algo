@@ -1,0 +1,18 @@
+---
+# MAINTAINER louis.hong@junhsue.com
+# 雅集 mall.youpenglai.com  mall前端部署
+- hosts: yj-font
+  remote_user: root
+  tasks:
+    - name: create if not exist
+      file:
+        path: /var/www/wechat_mall/
+        state: directory
+        mode: '0755'
+    - name:  copy mall.zip to nodes
+      copy:
+        src: /opt/playbook/devops/weimall/mall_{{version}}.zip
+        dest: /var/www/wechat_mall/mall_{{version}}.zip
+
+    - name: unzip .zip file
+      shell: "cd  /var/www/wechat_mall/ &&  unzip -o -q mall_{{version}}.zip"

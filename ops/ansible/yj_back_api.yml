@@ -1,4 +1,6 @@
 ---
+# MAINTAINER louis.hong@junhsue.com
+# 雅集 e-mall/api 后端部署
 - hosts: yj-back
   remote_user: root
   tasks:  
@@ -9,7 +11,7 @@
         mode: '0755'
   - name: copy and replace version the startapi.j2 to nodes
     template:
-        src: /opt/playbook/devops/script/startapi.t2
+        src: /opt/playbook/devops/tpl/startapi.t2
         dest: /usr/local/e-mall/api/startapi.sh
         mode: "u=rwx,g=r,o=r"
 
