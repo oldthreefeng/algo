@@ -18,12 +18,12 @@ const (
 	baseG          = 0.032           //公积金贷款基准年利率
 	S              = baseS / 12      //商业贷款月利率上浮 10%
 	G              = baseG / 12      //公积金贷款月利率
-	Start          = 10 - offset     //起始还贷日期如:10月份
+	Start          = 1 - offset     //起始还贷日期如:10月份
 	offset         = 1               //偏移量.%12后为0-11.
 	Year           = 30              //贷款年份
 	Month          = 12*Year + Start //贷款月数12*30
-	AG             = 150000          //公积金贷款总额
-	AS             = 880000          //商业贷款总额
+	AG             = 400000          //公积金贷款总额
+	AS             = 600000          //商业贷款总额
 	//S               = 0.0044916 //商业贷款月利率上浮 10%
 )
 
@@ -60,7 +60,7 @@ func benJ() {
 		payBack = payBacks + payBackG
 		//偏移量补足即可
 		fmt.Printf("%4d年%2d月还款: %.2f = %.2f[公积金] + %.2f[商贷],已还%.2f\n",
-			2019+i/12, i%12+offset, money[i], jG[i], jS[i], payBack)
+			2020+i/12, i%12+offset, money[i], jG[i], jS[i], payBack)
 	}
 	fmt.Printf("等额本金共计偿还利息为:%.2f\n", payBack-AS-AG)
 	fmt.Printf("等额本金公积金共计还款:%.2f\n",payBackG)
