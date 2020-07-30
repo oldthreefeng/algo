@@ -8,7 +8,7 @@
 package lintcode
 
 import (
-	"gogs.wangke.co/go/algo/utils"
+	"github.com/oldthreefeng/algo/utils"
 	"testing"
 )
 

@@ -9,7 +9,7 @@ package main
 
 import (
 	"fmt"
-	"gogs.wangke.co/go/algo/recursion"
+	"github.com/oldthreefeng/algo/recursion"
 )
 
 func main() {

@@ -4,7 +4,7 @@
  */
 package main
 
-import "gogs.wangke.co/go/algo/recursion"
+import "github.com/oldthreefeng/algo/recursion"
 
 func main() {
 	//recursion.NQueen(0)

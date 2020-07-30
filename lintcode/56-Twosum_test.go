@@ -77,7 +77,7 @@ func BenchmarkTwoSumSlow(b *testing.B) {
 /*
 goos: windows
 goarch: amd64
-pkg: gogs.wangke.co/go/algo/lintcode
+pkg: github.com/oldthreefeng/algo/lintcode
 BenchmarkTwoSum-4       	 3438445	       327 ns/op
 BenchmarkTwoSumSlow-4   	27269504	        50.1 ns/op
 */

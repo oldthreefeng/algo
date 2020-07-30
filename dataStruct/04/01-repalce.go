@@ -11,7 +11,7 @@ package main
 
 import (
 	"fmt"
-	"gogs.wangke.co/go/algo/lintcode"
+	"github.com/oldthreefeng/algo/lintcode"
 )
 
 func main() {

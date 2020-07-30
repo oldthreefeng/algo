@@ -8,7 +8,7 @@
 package main
 
 import (
-	"gogs.wangke.co/go/algo/rpc/client"
+	"github.com/oldthreefeng/algo/rpc/client"
 	"log"
 )
 

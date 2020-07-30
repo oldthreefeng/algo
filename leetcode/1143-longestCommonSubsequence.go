@@ -7,7 +7,7 @@
 
 package leetcode
 
-import "gogs.wangke.co/go/algo/utils"
+import "github.com/oldthreefeng/algo/utils"
 
 /*
 Lcs 获取string的最长公共子序列

@@ -30,7 +30,7 @@ func BenchmarkShortestPalindromeX(b *testing.B) {
 /*
 goos: windows
 goarch: amd64
-pkg: gogs.wangke.co/go/algo/leetcode
+pkg: github.com/oldthreefeng/algo/leetcode
 BenchmarkShortestPalindrome-4    	 5939828	       206 ns/op
 BenchmarkShortestPalindromeX-4   	 3418819	       371 ns/op
 */

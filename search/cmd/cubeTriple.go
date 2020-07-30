@@ -7,7 +7,7 @@
 
 package main
 
-import "gogs.wangke.co/go/algo/search"
+import "github.com/oldthreefeng/algo/search"
 
 func main() {
 	search.Period(22, 28, 33, 1)

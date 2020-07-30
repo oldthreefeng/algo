@@ -11,7 +11,7 @@ package main
 
 import (
 	"fmt"
-	"gogs.wangke.co/go/algo/stack"
+	"github.com/oldthreefeng/algo/stack"
 )
 
 var (

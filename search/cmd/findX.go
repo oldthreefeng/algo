@@ -4,7 +4,7 @@
  */
 package main
 
-import "gogs.wangke.co/go/algo/search"
+import "github.com/oldthreefeng/algo/search"
 
 func main() {
 	_ = search.FindX()

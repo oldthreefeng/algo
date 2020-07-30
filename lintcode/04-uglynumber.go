@@ -7,7 +7,7 @@
 
 package lintcode
 
-import "gogs.wangke.co/go/algo/utils"
+import "github.com/oldthreefeng/algo/utils"
 
 /*
 设计一个算法，找出只含素因子2，3，5 的第 n 小的数。

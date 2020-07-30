@@ -79,7 +79,7 @@ func TestReverseX(t *testing.T) {
 $ go test -bench=. -benchmem -run=none
 goos: windows
 goarch: amd64
-pkg: gogs.wangke.co/go/algo/utils
+pkg: github.com/oldthreefeng/algo/utils
 BenchmarkReverse-4                       3833876               309 ns/op              32 B/op          1 allocs/op
 BenchmarkReverseX-4                      4060528               275 ns/op              32 B/op          1 allocs/op
 BenchmarkReverseXa-4                     4213195               345 ns/op             112 B/op          2 allocs/op

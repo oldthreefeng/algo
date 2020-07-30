@@ -9,7 +9,7 @@ package main
 
 import (
 	"fmt"
-	"gogs.wangke.co/go/algo/utils"
+	"github.com/oldthreefeng/algo/utils"
 )
 
 var (

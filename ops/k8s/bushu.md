@@ -130,7 +130,7 @@ push代码 --> gitlab --> webhook -- > (git clone ${REPOSITORY}) -- > mvn 编译
 push
 
 ```bash
-REGISTY=gogs.wangke.co
+REGISTY=www.fenghong.tech
 TIME=`date +%Y%m%d%H%M`
 GIT_HASH=`git log -1 --pretty=format:"%h"`
 IMAGE=${REGISTY}/${JOB_BASE_NAME}

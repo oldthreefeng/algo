@@ -10,7 +10,7 @@ Copyright 2019 louis.
 package leetcode
 
 import (
-	"gogs.wangke.co/go/algo/utils"
+	"github.com/oldthreefeng/algo/utils"
 )
 
 func GcdOfStrings(a, b string) string {

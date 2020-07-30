@@ -9,7 +9,7 @@ Copyright 2019 louis.
 
 package lintcode
 
-import "gogs.wangke.co/go/algo/utils"
+import "github.com/oldthreefeng/algo/utils"
 
 /*
 dp[i][j]表示A串匹配到i，B串匹配到j时的最大公共长度

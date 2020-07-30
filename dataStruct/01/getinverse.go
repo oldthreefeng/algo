@@ -9,7 +9,7 @@ package main
 
 import (
 	"fmt"
-	"gogs.wangke.co/go/algo/sort"
+	"github.com/oldthreefeng/algo/utils"
 )
 
 var inv [100]int
@@ -26,5 +26,5 @@ func main() {
 	fmt.Println(getInverse(17, 26))
 
 
-	fmt.Println(sort.ExGcd(17, 26))
+	fmt.Println(utils.ExGcd(17, 26))
 }

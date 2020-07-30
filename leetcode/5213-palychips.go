@@ -46,7 +46,7 @@ package leetcode
 ```
 */
 
-import "gogs.wangke.co/go/algo/utils"
+import "github.com/oldthreefeng/algo/utils"
 
 func MinCostToMoveChips(chips []int) int {
 	odd, even := 0,0

@@ -10,8 +10,8 @@ package main
 import (
 	"fmt"
 	"github.com/imroc/biu"
-	"gogs.wangke.co/go/algo/leetcode"
-	"gogs.wangke.co/go/algo/search"
+	"github.com/oldthreefeng/algo/leetcode"
+	"github.com/oldthreefeng/algo/search"
 )
 
 func main() {

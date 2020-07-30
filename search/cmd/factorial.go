@@ -9,7 +9,7 @@ package main
 
 import (
 	"fmt"
-	"gogs.wangke.co/go/algo/search"
+	"github.com/oldthreefeng/algo/search"
 )
 
 func main() {

@@ -9,7 +9,7 @@ Copyright 2019 louis.
 
 package leetcode
 
-import "gogs.wangke.co/go/algo/utils"
+import "github.com/oldthreefeng/algo/utils"
 
 func ShortestPalindrome(s string) string  {
 	if len(s) <= 1 {

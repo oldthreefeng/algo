@@ -7,7 +7,7 @@
 
 package lintcode
 
-import "gogs.wangke.co/go/algo/sort"
+import "github.com/oldthreefeng/algo/sort"
 
 // O(n+mlogm) 超时,但是不稳定,最差的是O(n^2)
 func KthLargestElement(n int, nums []int) int {

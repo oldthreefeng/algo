@@ -7,7 +7,7 @@
 
 package lintcode
 
-import "gogs.wangke.co/go/algo/sort"
+import "github.com/oldthreefeng/algo/sort"
 
 /*
 合并排序数组 II

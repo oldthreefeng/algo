@@ -7,7 +7,7 @@
 
 package leetcode
 
-import "gogs.wangke.co/go/algo/utils"
+import "github.com/oldthreefeng/algo/utils"
 
 /*
 LongestSubsequence 最长等差子序列

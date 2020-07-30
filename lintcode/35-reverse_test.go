@@ -72,7 +72,7 @@ func BenchmarkReverseLinkX(b *testing.B) {
 /*
 goos: windows
 goarch: amd64
-pkg: gogs.wangke.co/go/algo/lintcode
+pkg: github.com/oldthreefeng/algo/lintcode
 BenchmarkReverseLink-4    	289194604	         3.96 ns/op
 BenchmarkReverseLinkX-4   	255333871	         4.75 ns/op
 PASS
