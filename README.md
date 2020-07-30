@@ -115,7 +115,7 @@ Josephu问题：
 4. 线性代数
 ```
 
-[Readme](sort/readme.md)
+[sort/README](sort/README.md)
 
 ## 位运算
 
