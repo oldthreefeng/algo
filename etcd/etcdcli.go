@@ -37,10 +37,17 @@ type epHealth struct {
 }
 
 func main() {
+	e := New()
+	e.HealthCheck()
+}
+
+func New() *EtcdFlags {
 	e := &EtcdFlags{}
 	endpoint := fmt.Sprintf("%s:2379", HOST)
 	e.Endpoints = append(e.Endpoints, endpoint)
-	e.HealthCheck()
+	return &EtcdFlags{
+		Endpoints: e.Endpoints,
+	}
 }
 
 func (e *EtcdFlags) HealthCheck() {
